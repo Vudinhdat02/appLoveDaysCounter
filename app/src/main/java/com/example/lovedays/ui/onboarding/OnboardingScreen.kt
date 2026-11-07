@@ -7,6 +7,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import com.example.lovedays.ui.components.LoveBackground
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -78,7 +85,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
     }
     val imageRequest = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    LoveBackground {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -95,6 +102,11 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
             AnimatedContent(
                 targetState = state.step,
                 label = "onboarding",
+                transitionSpec = {
+                    val forward = targetState.ordinal > initialState.ordinal
+                    (slideInHorizontally(tween(400)) { if (forward) it / 3 else -it / 3 } + fadeIn(tween(400)))
+                        .togetherWith(slideOutHorizontally(tween(300)) { if (forward) -it / 3 else it / 3 } + fadeOut(tween(250)))
+                },
                 modifier = Modifier.weight(1f).widthIn(max = 560.dp),
             ) { step ->
                 when (step) {

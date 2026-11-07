@@ -3,7 +3,7 @@ package com.example.lovedays.ui
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.Surface
+import com.example.lovedays.ui.components.LoveBackground
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.captureToImage
@@ -71,8 +71,9 @@ class ScreenshotTest {
     fun tearDown() = db.close()
 
     private fun shoot(name: String, content: @Composable () -> Unit) {
-        compose.setContent { LoveDaysTheme { Surface { content() } } }
-        compose.mainClock.advanceTimeBy(2_000)
+        compose.setContent { LoveDaysTheme { LoveBackground { content() } } }
+        compose.mainClock.autoAdvance = false
+        compose.mainClock.advanceTimeBy(2_500)
         compose.waitForIdle()
         Thread.sleep(300)
         compose.waitForIdle()
@@ -85,25 +86,22 @@ class ScreenshotTest {
     fun welcome() = shoot("1_welcome") { WelcomeStep(onStart = {}) }
 
     @Test
-    fun home() = shoot("2_home") {
-        HomeScreen(PaddingValues(), HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle()))
+    fun home() {
+        val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
+        shoot("2_home") { HomeScreen(PaddingValues(), vm) }
     }
 
     @Test
-    fun milestones() = shoot("3_milestones") {
-        MilestonesScreen(
-            PaddingValues(), onAdd = {}, onEdit = {},
-            viewModel = MilestonesViewModel(settings, specials, TodayProvider(clock), SavedStateHandle()),
-        )
+    fun milestones() {
+        val vm = MilestonesViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
+        shoot("3_milestones") { MilestonesScreen(PaddingValues(), onAdd = {}, onEdit = {}, viewModel = vm) }
     }
 
     @Test
-    fun settings() = shoot("4_settings") {
-        SettingsScreen(
-            PaddingValues(),
-            SettingsViewModel(
-                settings, specials, db.notificationLogDao(), ImageStorage(context), ReminderScheduler(context, clock), clock,
-            ),
+    fun settings() {
+        val vm = SettingsViewModel(
+            settings, specials, db.notificationLogDao(), ImageStorage(context), ReminderScheduler(context, clock), clock,
         )
+        shoot("4_settings") { SettingsScreen(PaddingValues(), vm) }
     }
 }

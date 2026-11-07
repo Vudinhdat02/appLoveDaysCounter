@@ -1,6 +1,29 @@
 package com.example.lovedays.ui.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideIn
+import androidx.compose.foundation.background
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
+import com.example.lovedays.ui.components.FloatingHearts
+import com.example.lovedays.ui.components.rememberAnimationsEnabled
+import kotlin.math.roundToLong
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,6 +78,9 @@ fun HomeScreen(contentPadding: PaddingValues, viewModel: HomeViewModel = hiltVie
 @Composable
 fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClick: () -> Unit) {
     val res = LocalResources.current
+    val celebrate = state.nextMilestone?.daysRemaining == 0L
+    Box(Modifier.fillMaxSize()) {
+    if (celebrate) FloatingHearts(count = 28, falling = true, maxAlpha = 0.8f, seed = 3)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -71,9 +97,15 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                PersonColumn(state.myAvatarPath, state.myName, Modifier.weight(1f))
-                BeatingHeart(size = 44.dp, modifier = Modifier.padding(horizontal = 8.dp))
-                PersonColumn(state.partnerAvatarPath, state.partnerName, Modifier.weight(1f))
+                Entrance(delayMillis = 0, fromOffsetX = -80, modifier = Modifier.weight(1f)) {
+                    PersonColumn(state.myAvatarPath, state.myName, Modifier.fillMaxWidth())
+                }
+                Entrance(delayMillis = 250) {
+                    BeatingHeart(size = 44.dp, modifier = Modifier.padding(horizontal = 4.dp))
+                }
+                Entrance(delayMillis = 0, fromOffsetX = 80, modifier = Modifier.weight(1f)) {
+                    PersonColumn(state.partnerAvatarPath, state.partnerName, Modifier.fillMaxWidth())
+                }
             }
 
             Spacer(Modifier.height(28.dp))
@@ -83,6 +115,7 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
                 R.plurals.a11y_loved_days, state.displayedDays.toInt(), state.displayedDays.toInt(),
             )
             val tapHint = stringResource(R.string.home_tap_to_change_unit)
+            Entrance(delayMillis = 150, fromOffsetY = 60) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,45 +130,52 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
                         role = Role.Button
                         onClick(label = tapHint) { onCounterClick(); true }
                     },
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 shape = MaterialTheme.shapes.extraLarge,
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(counterBrush())
+                        .padding(vertical = 24.dp, horizontal = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(R.string.home_together_for),
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = Color.White.copy(alpha = 0.9f),
                     )
-                    AnimatedContent(targetState = state.counterValue to unitLabel, label = "counter") { (value, label) ->
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = value.toString(),
-                                fontSize = 72.sp,
-                                lineHeight = 80.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                textAlign = TextAlign.Center,
-                            )
-                            Text(
-                                text = label,
-                                style = MaterialTheme.typography.headlineSmall,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            )
-                        }
+                    val shown = rememberCountUp(state.counterValue)
+                    Text(
+                        text = shown.toString(),
+                        fontSize = 76.sp,
+                        lineHeight = 84.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                    )
+                    AnimatedContent(targetState = unitLabel, label = "unit") { label ->
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = Color.White,
+                        )
                     }
                     Text(
                         text = tapHint,
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+                        color = Color.White.copy(alpha = 0.75f),
                         modifier = Modifier.padding(top = 8.dp),
                     )
                 }
             }
 
+            }
+
             Spacer(Modifier.height(20.dp))
+            Entrance(delayMillis = 350, fromOffsetY = 40) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = MilestoneText.period(res, state.period),
                 style = MaterialTheme.typography.titleLarge,
@@ -147,10 +187,16 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp),
             )
+            }
+            }
 
             state.nextMilestone?.let { next ->
                 Spacer(Modifier.height(24.dp))
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Entrance(delayMillis = 500, fromOffsetY = 60) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)),
+                ) {
                     Column(Modifier.padding(16.dp)) {
                         Text(
                             stringResource(R.string.home_next_milestone),
@@ -169,9 +215,11 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
                         )
                     }
                 }
+                }
             }
         }
     }
+}
 }
 
 @Composable
@@ -188,6 +236,55 @@ private fun PersonColumn(path: String?, name: String, modifier: Modifier = Modif
             modifier = Modifier.padding(top = 8.dp),
         )
     }
+}
+
+/** Số chạy từ giá trị cũ tới giá trị mới (lần đầu chạy từ 0). */
+@Composable
+private fun rememberCountUp(target: Long): Long {
+    val enabled = rememberAnimationsEnabled()
+    val anim = remember { Animatable(if (enabled) 0f else target.toFloat()) }
+    LaunchedEffect(target) {
+        if (enabled) anim.animateTo(target.toFloat(), tween(1400, easing = FastOutSlowInEasing)) else anim.snapTo(target.toFloat())
+    }
+    return anim.value.roundToLong()
+}
+
+@Composable
+private fun counterBrush(): Brush {
+    val scheme = MaterialTheme.colorScheme
+    val enabled = rememberAnimationsEnabled()
+    val shift = if (enabled) {
+        val t = rememberInfiniteTransition(label = "gradient")
+        val v by t.animateFloat(0f, 1f, infiniteRepeatable(tween(6000, easing = LinearEasing), RepeatMode.Reverse), label = "shift")
+        v
+    } else {
+        0f
+    }
+    return Brush.linearGradient(
+        colors = listOf(scheme.primary, scheme.tertiary, scheme.primary.copy(alpha = 0.85f)),
+        start = Offset(0f, 0f),
+        end = Offset(600f + 900f * shift, 900f - 600f * shift),
+    )
+}
+
+/** Hiện dần + trượt vào khi màn hình mở. */
+@Composable
+fun Entrance(
+    delayMillis: Int,
+    fromOffsetX: Int = 0,
+    fromOffsetY: Int = 0,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    val enabled = rememberAnimationsEnabled()
+    val visible = remember { MutableTransitionState(!enabled).apply { targetState = true } }
+    AnimatedVisibility(
+        visibleState = visible,
+        modifier = modifier,
+        enter = fadeIn(tween(600, delayMillis)) +
+            slideIn(tween(700, delayMillis, easing = FastOutSlowInEasing)) { IntOffset(fromOffsetX, fromOffsetY) } +
+            scaleIn(tween(700, delayMillis), initialScale = 0.9f),
+    ) { content() }
 }
 
 @Composable

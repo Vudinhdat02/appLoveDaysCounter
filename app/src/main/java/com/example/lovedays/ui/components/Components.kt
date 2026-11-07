@@ -1,8 +1,9 @@
 package com.example.lovedays.ui.components
 
-import android.provider.Settings
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.keyframes
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -80,31 +81,57 @@ fun Avatar(path: String?, name: String, size: Dp, modifier: Modifier = Modifier)
     }
 }
 
-/** Trái tim "đập" nhẹ; tắt animation khi hệ thống bật giảm chuyển động. */
+/** Trái tim "đập" nhẹ kèm vòng sóng lan toả; tắt animation khi hệ thống bật giảm chuyển động. */
 @Composable
-fun BeatingHeart(size: Dp, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    val animationsEnabled = remember {
-        Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) > 0f
-    }
-    val scale = if (animationsEnabled) {
+fun BeatingHeart(size: Dp, modifier: Modifier = Modifier, ring: Boolean = true) {
+    val animationsEnabled = rememberAnimationsEnabled()
+    var scale = 1f
+    var ringProgress = 0f
+    if (animationsEnabled) {
         val transition = rememberInfiniteTransition(label = "heart")
         val s by transition.animateFloat(
             initialValue = 1f,
-            targetValue = 1.15f,
-            animationSpec = infiniteRepeatable(tween(600, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                keyframes {
+                    durationMillis = 1200
+                    1f at 0
+                    1.22f at 150
+                    1f at 300
+                    1.14f at 450
+                    1f at 650
+                },
+            ),
             label = "heartScale",
         )
-        s
-    } else {
-        1f
+        val r by transition.animateFloat(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(tween(1200, easing = LinearEasing)),
+            label = "ring",
+        )
+        scale = s
+        ringProgress = r
     }
-    Icon(
-        imageVector = Icons.Filled.Favorite,
-        contentDescription = null,
-        tint = HeartRed,
-        modifier = modifier.size(size).scale(scale),
-    )
+    val ringColor = HeartRed
+    Box(modifier.size(size * 1.6f), contentAlignment = Alignment.Center) {
+        if (ring && animationsEnabled) {
+            Canvas(Modifier.size(size * 1.6f)) {
+                val maxR = this.size.minDimension / 2
+                drawCircle(
+                    color = ringColor.copy(alpha = 0.35f * (1f - ringProgress)),
+                    radius = maxR * (0.45f + 0.55f * ringProgress),
+                    style = Stroke(width = 3.dp.toPx()),
+                )
+            }
+        }
+        Icon(
+            imageVector = Icons.Filled.Favorite,
+            contentDescription = null,
+            tint = HeartRed,
+            modifier = Modifier.size(size).scale(scale),
+        )
+    }
 }
 
 /** Trạng thái rỗng có minh hoạ và lời gợi ý. */

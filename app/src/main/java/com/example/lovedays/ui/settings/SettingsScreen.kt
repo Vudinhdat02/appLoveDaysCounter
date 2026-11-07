@@ -35,6 +35,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -47,6 +49,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -107,7 +110,8 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
 
     Scaffold(
         modifier = Modifier.padding(contentPadding),
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.settings_title)) }) },
+        containerColor = Color.Transparent,
+        topBar = { TopAppBar(colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent), title = { Text(stringResource(R.string.settings_title)) }) },
     ) { inner ->
         Column(
             Modifier
@@ -126,11 +130,13 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
                 AvatarButton(s.partnerAvatarPath, s.partnerName) { dialog = SettingsDialog.AVATAR_PARTNER }
             }
             ListItem(
+        colors = transparentListItem(),
                 modifier = Modifier.clickable { dialog = SettingsDialog.NAMES },
                 headlineContent = { Text(stringResource(R.string.settings_names)) },
                 supportingContent = { Text("${s.myName} ❤ ${s.partnerName}") },
             )
             ListItem(
+        colors = transparentListItem(),
                 modifier = Modifier.clickable { dialog = SettingsDialog.START_DATE },
                 headlineContent = { Text(stringResource(R.string.settings_start_date)) },
                 supportingContent = { Text(s.startDate?.let { MilestoneText.date(it) }.orEmpty()) },
@@ -158,6 +164,7 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
             )
             if (s.notificationsEnabled && !systemNotificationsAllowed) {
                 ListItem(
+        colors = transparentListItem(),
                     modifier = Modifier.clickable {
                         context.startActivity(
                             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
@@ -171,6 +178,7 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
                 )
             }
             ListItem(
+        colors = transparentListItem(),
                 modifier = Modifier.clickable(enabled = s.notificationsEnabled) { dialog = SettingsDialog.TIME },
                 headlineContent = { Text(stringResource(R.string.settings_reminder_time)) },
                 supportingContent = { Text("%02d:%02d".format(s.reminderHour, s.reminderMinute)) },
@@ -230,6 +238,7 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
             SectionHeader(stringResource(R.string.settings_section_language))
             AppLanguage.entries.forEach { lang ->
                 ListItem(
+        colors = transparentListItem(),
                     modifier = Modifier.selectable(
                         selected = language == lang,
                         role = Role.RadioButton,
@@ -249,6 +258,7 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
             // --- Dữ liệu ---
             SectionHeader(stringResource(R.string.settings_section_data))
             ListItem(
+        colors = transparentListItem(),
                 modifier = Modifier.clickable { dialog = SettingsDialog.RESET_1 },
                 headlineContent = { Text(stringResource(R.string.settings_reset), color = MaterialTheme.colorScheme.error) },
                 supportingContent = { Text(stringResource(R.string.settings_reset_desc)) },
@@ -344,6 +354,7 @@ private fun SwitchItem(
     enabled: Boolean = true,
 ) {
     ListItem(
+        colors = transparentListItem(),
         modifier = Modifier.selectable(
             selected = checked,
             enabled = enabled,
@@ -435,3 +446,6 @@ private fun TimeDialog(hour: Int, minute: Int, onDismiss: () -> Unit, onConfirm:
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
     )
 }
+
+@Composable
+private fun transparentListItem(): ListItemColors = ListItemDefaults.colors(containerColor = Color.Transparent)

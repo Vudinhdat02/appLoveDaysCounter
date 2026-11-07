@@ -1,6 +1,14 @@
 package com.example.lovedays.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
+import com.example.lovedays.ui.components.LoveBackground
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Favorite
@@ -68,11 +76,13 @@ fun MainScaffold() {
     val destination = backStack?.destination
     val showBottomBar = topLevels.any { top -> destination?.hasRoute(top.route::class) == true }
 
+    LoveBackground {
     Scaffold(
+        containerColor = Color.Transparent,
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
+                NavigationBar(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)) {
                     topLevels.forEach { top ->
                         val selected = destination?.hasRoute(top.route::class) == true
                         NavigationBarItem(
@@ -96,6 +106,10 @@ fun MainScaffold() {
             navController = navController,
             startDestination = HomeRoute,
             modifier = Modifier,
+            enterTransition = { fadeIn(tween(350)) + slideInVertically(tween(350)) { it / 12 } },
+            exitTransition = { fadeOut(tween(200)) },
+            popEnterTransition = { fadeIn(tween(350)) },
+            popExitTransition = { fadeOut(tween(200)) + slideOutVertically(tween(300)) { it / 12 } },
         ) {
             composable<HomeRoute> { HomeScreen(contentPadding = padding) }
             composable<MilestonesRoute> {
@@ -111,5 +125,6 @@ fun MainScaffold() {
                 SpecialDayEditScreen(isNew = route.id == 0L, onDone = { navController.popBackStack() })
             }
         }
+    }
     }
 }

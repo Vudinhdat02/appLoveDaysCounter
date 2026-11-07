@@ -1,6 +1,17 @@
 package com.example.lovedays.ui.milestones
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.composed
+import com.example.lovedays.ui.components.rememberAnimationsEnabled
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +40,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -64,7 +77,8 @@ fun MilestonesScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
         modifier = Modifier.padding(contentPadding),
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.milestones_title)) }) },
+        containerColor = Color.Transparent,
+        topBar = { TopAppBar(colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent), title = { Text(stringResource(R.string.milestones_title)) }) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAdd) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.special_add))
@@ -128,6 +142,7 @@ private fun MilestoneList(state: MilestonesUiState, onEdit: (Long) -> Unit) {
     ) {
         items(state.items, key = { it.key + "_" + it.date }) { m ->
             MilestoneRow(
+                modifier = Modifier.animateItem().itemEntrance(),
                 m = m,
                 isNext = m.key == state.nextKey,
                 onClick = m.specialDayId?.let { id -> { onEdit(id) } },
@@ -137,13 +152,21 @@ private fun MilestoneList(state: MilestonesUiState, onEdit: (Long) -> Unit) {
 }
 
 @Composable
-fun MilestoneRow(m: Milestone, isNext: Boolean, onClick: (() -> Unit)?) {
+fun MilestoneRow(m: Milestone, isNext: Boolean, onClick: (() -> Unit)?, modifier: Modifier = Modifier) {
     val res = LocalResources.current
     val passedLabel = stringResource(R.string.milestone_passed)
     val nextLabel = stringResource(R.string.milestone_next)
+    val pulse = if (isNext && rememberAnimationsEnabled()) {
+        val t = rememberInfiniteTransition(label = "next")
+        val v by t.animateFloat(1f, 1.025f, infiniteRepeatable(tween(900), RepeatMode.Reverse), label = "pulse")
+        v
+    } else {
+        1f
+    }
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .scale(pulse)
             .alpha(if (m.isPassed) 0.55f else 1f)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .semantics {
@@ -154,7 +177,7 @@ fun MilestoneRow(m: Milestone, isNext: Boolean, onClick: (() -> Unit)?) {
                 }
             },
         colors = CardDefaults.cardColors(
-            containerColor = if (isNext) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+            containerColor = if (isNext) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface.copy(alpha = 0.82f),
         ),
     ) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -205,5 +228,16 @@ fun MilestoneRow(m: Milestone, isNext: Boolean, onClick: (() -> Unit)?) {
                 )
             }
         }
+    }
+}
+
+/** Mỗi dòng hiện dần và trượt lên khi xuất hiện. */
+private fun Modifier.itemEntrance(): Modifier = composed {
+    val enabled = rememberAnimationsEnabled()
+    val progress = remember { Animatable(if (enabled) 0f else 1f) }
+    LaunchedEffect(Unit) { progress.animateTo(1f, tween(450, easing = FastOutSlowInEasing)) }
+    graphicsLayer {
+        alpha = progress.value
+        translationY = (1f - progress.value) * 40.dp.toPx()
     }
 }

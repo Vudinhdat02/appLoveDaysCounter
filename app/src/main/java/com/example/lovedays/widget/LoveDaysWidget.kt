@@ -72,7 +72,7 @@ interface WidgetEntryPoint {
 /** Widget đếm ngày. Kích thước 2x2 hiển thị số ngày; 4x2 thêm ảnh, tên và mốc sắp tới. */
 open class LoveDaysWidget : GlanceAppWidget() {
 
-    override val sizeMode = SizeMode.Responsive(setOf(SMALL, WIDE))
+    override val sizeMode = SizeMode.Exact
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, WidgetEntryPoint::class.java)
@@ -108,11 +108,14 @@ private fun WidgetContent(settings: CoupleSettings?, specialDays: List<SpecialDa
     val res = context.resources
     val size = LocalSize.current
     val start = settings?.startDate
+    val small = size.width < WIDE_THRESHOLD
+    // 2x2: luôn là hình vuông cân đối, căn giữa ô widget.
+    val side = minOf(size.width, size.height)
+    Box(modifier = GlanceModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     Box(
-        modifier = GlanceModifier
-            .fillMaxSize()
+        modifier = (if (small) GlanceModifier.size(side) else GlanceModifier.fillMaxSize())
             .background(ImageProvider(R.drawable.widget_background))
-            .cornerRadius(24.dp)
+            .cornerRadius(if (small) side * 0.24f else 24.dp)
             .clickable(actionStartActivity<MainActivity>())
             .padding(8.dp),
         contentAlignment = Alignment.Center,
@@ -128,15 +131,24 @@ private fun WidgetContent(settings: CoupleSettings?, specialDays: List<SpecialDa
         val days = DayCounter.displayedDays(start, today, settings.countStartAsDayOne)
         val daysLabel = res.getQuantityString(R.plurals.label_days, days.toInt())
         val description = res.getQuantityString(R.plurals.a11y_loved_days, days.toInt(), days.toInt())
-        if (size.width < WIDE_THRESHOLD) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = GlanceModifier.semantics { contentDescription = description },
-            ) {
-                Text("❤", style = TextStyle(color = White, fontSize = 22.sp))
-                Text(days.toString(), style = TextStyle(color = White, fontSize = 34.sp, fontWeight = FontWeight.Bold))
-                Text(daysLabel, style = TextStyle(color = WhiteSoft, fontSize = 14.sp))
+        if (small) {
+            val digits = days.toString().length.coerceAtLeast(3)
+            val numberSize = (side.value * (if (digits <= 3) 0.30f else 0.30f * 3f / digits)).sp
+            Box(contentAlignment = Alignment.Center, modifier = GlanceModifier.fillMaxSize()) {
+                Image(
+                    provider = ImageProvider(R.drawable.ic_widget_heart_bg),
+                    contentDescription = null,
+                    modifier = GlanceModifier.size(side * 0.82f),
+                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = GlanceModifier.semantics { contentDescription = description },
+                ) {
+                    Text("❤", style = TextStyle(color = White, fontSize = (side.value * 0.12f).sp))
+                    Text(days.toString(), style = TextStyle(color = White, fontSize = numberSize, fontWeight = FontWeight.Bold))
+                    Text(daysLabel, style = TextStyle(color = WhiteSoft, fontSize = (side.value * 0.11f).sp))
+                }
             }
         } else {
             val next = MilestoneGenerator.nextUpcoming(
@@ -173,6 +185,7 @@ private fun WidgetContent(settings: CoupleSettings?, specialDays: List<SpecialDa
             }
         }
     }
+}
 }
 
 private val WIDE_THRESHOLD = 200.dp
