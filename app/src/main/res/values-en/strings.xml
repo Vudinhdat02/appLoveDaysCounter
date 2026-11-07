@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Love Days</string>
+
+    <string name="nav_home">Counter</string>
+    <string name="nav_milestones">Anniversaries</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_ok">OK</string>
+    <string name="action_save">Save</string>
+    <string name="action_skip">Skip</string>
+    <string name="action_choose_photo">Choose photo</string>
+    <string name="action_remove_photo">Remove photo</string>
+    <string name="today">Today</string>
+
+    <string name="onboarding_welcome_title">Welcome to Love Days</string>
+    <string name="onboarding_welcome_subtitle">Keep track of every day together and never miss an anniversary.</string>
+    <string name="onboarding_start">Get started</string>
+    <string name="onboarding_names_title">What are your names?</string>
+    <string name="onboarding_names_subtitle">Names are shown on the home screen and the widget.</string>
+    <string name="field_my_name">Your name</string>
+    <string name="field_partner_name">Your partner\'s name</string>
+    <string name="onboarding_date_title">When did you start dating?</string>
+    <string name="onboarding_date_subtitle">Dates in the future can\'t be selected.</string>
+    <string name="onboarding_pick_date">Pick the start date</string>
+    <string name="onboarding_avatars_title">Add profile photos</string>
+    <string name="onboarding_avatars_subtitle">Optional. You can change them any time in Settings.</string>
+    <string name="onboarding_notif_title">Anniversary reminders</string>
+    <string name="onboarding_notif_subtitle">The app sends a notification in the morning on special days (like 100 days, 1 year, or your partner\'s birthday) so you never forget. You can turn this off any time.</string>
+    <string name="onboarding_notif_allow">Allow notifications</string>
+    <string name="onboarding_notif_later">Later</string>
+
+    <string name="home_together_for">Together for</string>
+    <string name="home_tap_to_change_unit">Tap to change unit</string>
+    <string name="home_since">Since %1$s</string>
+    <string name="home_next_milestone">Next anniversary</string>
+    <string name="a11y_avatar_of">Photo of %1$s</string>
+
+    <plurals name="a11y_loved_days">
+        <item quantity="one">In love for %1$d day</item>
+        <item quantity="other">In love for %1$d days</item>
+    </plurals>
+    <plurals name="label_days">
+        <item quantity="one">day</item>
+        <item quantity="other">days</item>
+    </plurals>
+    <plurals name="label_weeks">
+        <item quantity="one">week</item>
+        <item quantity="other">weeks</item>
+    </plurals>
+    <plurals name="label_months">
+        <item quantity="one">month</item>
+        <item quantity="other">months</item>
+    </plurals>
+    <plurals name="label_hours">
+        <item quantity="one">hour</item>
+        <item quantity="other">hours</item>
+    </plurals>
+    <plurals name="period_years">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+    <plurals name="period_months">
+        <item quantity="one">%1$d month</item>
+        <item quantity="other">%1$d months</item>
+    </plurals>
+    <plurals name="period_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+
+    <string name="milestones_title">Anniversaries</string>
+    <string name="filter_all">All</string>
+    <string name="filter_auto">Automatic</string>
+    <string name="filter_mine">Mine</string>
+    <string name="milestone_passed">Passed</string>
+    <string name="milestone_next">Coming up next</string>
+    <string name="countdown_today">Today is %1$s 🎉</string>
+    <plurals name="milestone_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <plurals name="milestone_years">
+        <item quantity="one">%1$d-year anniversary</item>
+        <item quantity="other">%1$d-year anniversary</item>
+    </plurals>
+    <plurals name="countdown_remaining">
+        <item quantity="one">%1$d day until %2$s</item>
+        <item quantity="other">%1$d days until %2$s</item>
+    </plurals>
+    <plurals name="countdown_passed">
+        <item quantity="one">%1$d day ago</item>
+        <item quantity="other">%1$d days ago</item>
+    </plurals>
+    <plurals name="remaining_short">
+        <item quantity="one">In %1$d day</item>
+        <item quantity="other">In %1$d days</item>
+    </plurals>
+
+    <string name="special_add">Add special day</string>
+    <string name="special_edit">Edit special day</string>
+    <string name="special_field_title">Title</string>
+    <string name="special_field_title_hint">e.g. Partner\'s birthday</string>
+    <string name="special_field_date">Date: %1$s</string>
+    <string name="special_field_emoji">Icon</string>
+    <string name="special_repeat_yearly">Repeat every year</string>
+    <string name="special_remind">Remind me</string>
+    <string name="special_delete_title">Delete special day?</string>
+    <string name="special_delete_message">\"%1$s\" will be deleted permanently.</string>
+    <string name="special_empty_title">No special days yet</string>
+    <string name="special_empty_hint">Tap + to add a birthday, the day you first met, your proposal…</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_couple">Couple</string>
+    <string name="settings_names">Names</string>
+    <string name="settings_start_date">Start date</string>
+    <string name="settings_day_one">Count the start date as day 1</string>
+    <string name="settings_day_one_desc">The start date counts as your first day together</string>
+    <string name="settings_avatar_message">Choose a new photo from your gallery.</string>
+    <string name="settings_section_notifications">Notifications</string>
+    <string name="settings_notifications">Anniversary notifications</string>
+    <string name="settings_notifications_blocked">Notifications are blocked</string>
+    <string name="settings_notifications_open_system">Tap to open the system notification settings</string>
+    <string name="settings_reminder_time">Reminder time</string>
+    <string name="settings_remind_one_day">Remind 1 day before</string>
+    <string name="settings_remind_seven_days">Remind 7 days before</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+    <string name="settings_accent">Accent color</string>
+    <string name="accent_pink">Pink</string>
+    <string name="accent_red">Red</string>
+    <string name="accent_purple">Purple</string>
+    <string name="accent_blue">Blue</string>
+    <string name="accent_dynamic">Wallpaper</string>
+    <string name="settings_section_language">Language</string>
+    <string name="settings_section_data">Data</string>
+    <string name="settings_reset">Delete all data</string>
+    <string name="settings_reset_desc">Delete names, photos, special days and return to setup</string>
+    <string name="reset_title_1">Delete all data?</string>
+    <string name="reset_message_1">All names, photos, the start date and special days will be removed from this device.</string>
+    <string name="reset_title_2">Are you sure?</string>
+    <string name="reset_message_2">This can\'t be undone.</string>
+    <string name="reset_confirm">Delete permanently</string>
+
+    <string name="notif_channel_name">Anniversaries</string>
+    <string name="notif_channel_description">Reminders for your anniversaries and special days</string>
+    <string name="notif_title">%1$s ❤ %2$s</string>
+    <string name="notif_today_days">Today is day %1$d of you two together 💕</string>
+    <string name="notif_today_years">Today is your %1$d-year anniversary 💕</string>
+    <string name="notif_today_custom">Today is %1$s 💕</string>
+    <string name="notif_tomorrow_days">Tomorrow is day %1$d of you two together 💕</string>
+    <string name="notif_tomorrow_years">Tomorrow is your %1$d-year anniversary 💕</string>
+    <string name="notif_tomorrow_custom">Tomorrow is %1$s 💕</string>
+    <string name="notif_week_days">7 days until your %1$d days together 💕</string>
+    <string name="notif_week_years">7 days until your %1$d-year anniversary 💕</string>
+    <string name="notif_week_custom">7 days until %1$s 💕</string>
+
+    <string name="widget_setup">Open the app to set up ❤</string>
+    <string name="widget_small_description">Days in love</string>
+    <string name="widget_wide_description">Days in love, your photos and the next anniversary</string>
+</resources>

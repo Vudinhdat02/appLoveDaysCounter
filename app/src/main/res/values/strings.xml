@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Đếm Ngày Yêu</string>
+
+    <!-- Điều hướng -->
+    <string name="nav_home">Bộ đếm</string>
+    <string name="nav_milestones">Kỷ niệm</string>
+    <string name="nav_settings">Cài đặt</string>
+
+    <!-- Hành động chung -->
+    <string name="action_back">Quay lại</string>
+    <string name="action_cancel">Huỷ</string>
+    <string name="action_continue">Tiếp tục</string>
+    <string name="action_delete">Xoá</string>
+    <string name="action_ok">OK</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_skip">Bỏ qua</string>
+    <string name="action_choose_photo">Chọn ảnh</string>
+    <string name="action_remove_photo">Xoá ảnh</string>
+    <string name="today">Hôm nay</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Chào mừng đến với Đếm Ngày Yêu</string>
+    <string name="onboarding_welcome_subtitle">Cùng nhau lưu giữ từng ngày bên nhau, không bỏ lỡ bất kỳ ngày kỷ niệm nào.</string>
+    <string name="onboarding_start">Bắt đầu</string>
+    <string name="onboarding_names_title">Hai bạn tên là gì?</string>
+    <string name="onboarding_names_subtitle">Tên sẽ hiển thị trên màn hình chính và widget.</string>
+    <string name="field_my_name">Tên của bạn</string>
+    <string name="field_partner_name">Tên người ấy</string>
+    <string name="onboarding_date_title">Hai bạn bắt đầu yêu từ ngày nào?</string>
+    <string name="onboarding_date_subtitle">Không thể chọn ngày trong tương lai.</string>
+    <string name="onboarding_pick_date">Chọn ngày bắt đầu</string>
+    <string name="onboarding_avatars_title">Thêm ảnh đại diện</string>
+    <string name="onboarding_avatars_subtitle">Không bắt buộc. Bạn có thể đổi ảnh bất cứ lúc nào trong Cài đặt.</string>
+    <string name="onboarding_notif_title">Nhắc ngày kỷ niệm</string>
+    <string name="onboarding_notif_subtitle">App sẽ gửi thông báo vào buổi sáng những ngày kỷ niệm (ví dụ 100 ngày, 1 năm, sinh nhật người ấy) để bạn không bao giờ quên. Bạn có thể tắt bất cứ lúc nào.</string>
+    <string name="onboarding_notif_allow">Cho phép thông báo</string>
+    <string name="onboarding_notif_later">Để sau</string>
+
+    <!-- Màn hình chính -->
+    <string name="home_together_for">Đã yêu nhau</string>
+    <string name="home_tap_to_change_unit">Chạm để đổi đơn vị</string>
+    <string name="home_since">Từ ngày %1$s</string>
+    <string name="home_next_milestone">Kỷ niệm sắp tới</string>
+    <string name="a11y_avatar_of">Ảnh của %1$s</string>
+
+    <plurals name="a11y_loved_days">
+        <item quantity="other">Đã yêu %1$d ngày</item>
+    </plurals>
+    <plurals name="label_days">
+        <item quantity="other">ngày</item>
+    </plurals>
+    <plurals name="label_weeks">
+        <item quantity="other">tuần</item>
+    </plurals>
+    <plurals name="label_months">
+        <item quantity="other">tháng</item>
+    </plurals>
+    <plurals name="label_hours">
+        <item quantity="other">giờ</item>
+    </plurals>
+    <plurals name="period_years">
+        <item quantity="other">%1$d năm</item>
+    </plurals>
+    <plurals name="period_months">
+        <item quantity="other">%1$d tháng</item>
+    </plurals>
+    <plurals name="period_days">
+        <item quantity="other">%1$d ngày</item>
+    </plurals>
+
+    <!-- Mốc kỷ niệm -->
+    <string name="milestones_title">Ngày kỷ niệm</string>
+    <string name="filter_all">Tất cả</string>
+    <string name="filter_auto">Tự động</string>
+    <string name="filter_mine">Của tôi</string>
+    <string name="milestone_passed">Đã qua</string>
+    <string name="milestone_next">Sắp tới gần nhất</string>
+    <string name="countdown_today">Hôm nay là %1$s 🎉</string>
+    <plurals name="milestone_days">
+        <item quantity="other">%1$d ngày</item>
+    </plurals>
+    <plurals name="milestone_years">
+        <item quantity="other">Kỷ niệm %1$d năm</item>
+    </plurals>
+    <plurals name="countdown_remaining">
+        <item quantity="other">Còn %1$d ngày nữa là %2$s</item>
+    </plurals>
+    <plurals name="countdown_passed">
+        <item quantity="other">%1$d ngày trước</item>
+    </plurals>
+    <plurals name="remaining_short">
+        <item quantity="other">Còn %1$d ngày</item>
+    </plurals>
+
+    <!-- Ngày đặc biệt -->
+    <string name="special_add">Thêm ngày đặc biệt</string>
+    <string name="special_edit">Sửa ngày đặc biệt</string>
+    <string name="special_field_title">Tiêu đề</string>
+    <string name="special_field_title_hint">Ví dụ: Sinh nhật người ấy</string>
+    <string name="special_field_date">Ngày: %1$s</string>
+    <string name="special_field_emoji">Biểu tượng</string>
+    <string name="special_repeat_yearly">Lặp lại hằng năm</string>
+    <string name="special_remind">Nhắc tôi</string>
+    <string name="special_delete_title">Xoá ngày đặc biệt?</string>
+    <string name="special_delete_message">\"%1$s\" sẽ bị xoá vĩnh viễn.</string>
+    <string name="special_empty_title">Chưa có ngày đặc biệt nào</string>
+    <string name="special_empty_hint">Nhấn nút + để thêm sinh nhật người ấy, ngày gặp nhau lần đầu, ngày cầu hôn…</string>
+
+    <!-- Cài đặt -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_section_couple">Cặp đôi</string>
+    <string name="settings_names">Tên hai bạn</string>
+    <string name="settings_start_date">Ngày bắt đầu yêu</string>
+    <string name="settings_day_one">Tính ngày bắt đầu là ngày 1</string>
+    <string name="settings_day_one_desc">Ngày bắt đầu được tính là ngày thứ nhất bên nhau</string>
+    <string name="settings_avatar_message">Chọn ảnh mới từ thư viện ảnh.</string>
+    <string name="settings_section_notifications">Thông báo</string>
+    <string name="settings_notifications">Thông báo kỷ niệm</string>
+    <string name="settings_notifications_blocked">Thông báo đang bị chặn</string>
+    <string name="settings_notifications_open_system">Chạm để mở cài đặt thông báo của hệ thống</string>
+    <string name="settings_reminder_time">Giờ nhắc</string>
+    <string name="settings_remind_one_day">Nhắc trước 1 ngày</string>
+    <string name="settings_remind_seven_days">Nhắc trước 7 ngày</string>
+    <string name="settings_section_appearance">Giao diện</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_dark">Tối</string>
+    <string name="theme_system">Hệ thống</string>
+    <string name="settings_accent">Màu chủ đạo</string>
+    <string name="accent_pink">Hồng</string>
+    <string name="accent_red">Đỏ</string>
+    <string name="accent_purple">Tím</string>
+    <string name="accent_blue">Xanh</string>
+    <string name="accent_dynamic">Theo hình nền</string>
+    <string name="settings_section_language">Ngôn ngữ</string>
+    <string name="language_vi" translatable="false">Tiếng Việt</string>
+    <string name="language_en" translatable="false">English</string>
+    <string name="settings_section_data">Dữ liệu</string>
+    <string name="settings_reset">Xoá toàn bộ dữ liệu</string>
+    <string name="settings_reset_desc">Xoá tên, ảnh, ngày đặc biệt và quay lại màn hình thiết lập</string>
+    <string name="reset_title_1">Xoá toàn bộ dữ liệu?</string>
+    <string name="reset_message_1">Toàn bộ tên, ảnh, ngày bắt đầu và ngày đặc biệt sẽ bị xoá khỏi máy.</string>
+    <string name="reset_title_2">Bạn chắc chắn chứ?</string>
+    <string name="reset_message_2">Thao tác này không thể hoàn tác.</string>
+    <string name="reset_confirm">Xoá vĩnh viễn</string>
+
+    <!-- Thông báo -->
+    <string name="notif_channel_name">Kỷ niệm</string>
+    <string name="notif_channel_description">Nhắc các ngày kỷ niệm và ngày đặc biệt của hai bạn</string>
+    <string name="notif_title">%1$s ❤ %2$s</string>
+    <string name="notif_today_days">Hôm nay là ngày thứ %1$d hai bạn bên nhau 💕</string>
+    <string name="notif_today_years">Hôm nay là kỷ niệm %1$d năm yêu nhau 💕</string>
+    <string name="notif_today_custom">Hôm nay là %1$s 💕</string>
+    <string name="notif_tomorrow_days">Ngày mai là ngày thứ %1$d hai bạn bên nhau 💕</string>
+    <string name="notif_tomorrow_years">Ngày mai là kỷ niệm %1$d năm yêu nhau 💕</string>
+    <string name="notif_tomorrow_custom">Ngày mai là %1$s 💕</string>
+    <string name="notif_week_days">Còn 7 ngày nữa là %1$d ngày yêu nhau 💕</string>
+    <string name="notif_week_years">Còn 7 ngày nữa là kỷ niệm %1$d năm yêu nhau 💕</string>
+    <string name="notif_week_custom">Còn 7 ngày nữa là %1$s 💕</string>
+
+    <!-- Widget -->
+    <string name="widget_setup">Mở app để thiết lập ❤</string>
+    <string name="widget_small_description">Số ngày yêu nhau</string>
+    <string name="widget_wide_description">Số ngày yêu, ảnh hai bạn và kỷ niệm sắp tới</string>
+</resources>

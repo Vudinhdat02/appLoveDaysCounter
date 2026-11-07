@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_pink">#FFFF6F91</color>
+    <color name="brand_pink_dark">#FFD63F6A</color>
+    <color name="splash_background">#FFFFF0F3</color>
+    <color name="ic_launcher_background">#FFFF6F91</color>
+</resources>
