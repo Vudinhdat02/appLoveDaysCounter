@@ -64,7 +64,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.lovedays.R
-import com.example.lovedays.data.datastore.CounterShape
 import com.example.lovedays.domain.CounterUnit
 import com.example.lovedays.ui.components.Avatar
 import com.example.lovedays.ui.components.BeatingHeart
@@ -73,7 +72,7 @@ import com.example.lovedays.ui.components.MilestoneText
 @Composable
 fun HomeScreen(contentPadding: PaddingValues, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    state?.let { HomeContent(it, contentPadding, onCounterClick = viewModel::cycleUnit, onShapeChange = viewModel::setCounterShape) }
+    state?.let { HomeContent(it, contentPadding, onCounterClick = viewModel::cycleUnit) }
 }
 
 @Composable
@@ -81,7 +80,6 @@ fun HomeContent(
     state: HomeUiState,
     contentPadding: PaddingValues,
     onCounterClick: () -> Unit,
-    onShapeChange: (CounterShape) -> Unit = {},
 ) {
     val res = LocalResources.current
     val celebrate = state.nextMilestone?.daysRemaining == 0L
@@ -119,8 +117,7 @@ fun HomeContent(
             Entrance(delayMillis = 150, fromOffsetY = 60) {
                 CounterCard(state = state, onClick = onCounterClick)
             }
-            Spacer(Modifier.height(12.dp))
-            ShapePicker(selected = state.counterShape, onSelect = onShapeChange)
+
 
             Spacer(Modifier.height(20.dp))
             Entrance(delayMillis = 350, fromOffsetY = 40) {

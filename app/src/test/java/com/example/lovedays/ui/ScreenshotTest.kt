@@ -30,7 +30,6 @@ import com.example.lovedays.ui.milestones.MilestonesViewModel
 import com.example.lovedays.ui.onboarding.WelcomeStep
 import com.example.lovedays.ui.onboarding.StartDateStep
 import com.example.lovedays.data.datastore.AccentColor
-import com.example.lovedays.data.datastore.CounterShape
 import com.example.lovedays.data.datastore.ThemeMode
 import com.example.lovedays.ui.settings.SettingsScreen
 import com.example.lovedays.ui.settings.SettingsViewModel
@@ -99,26 +98,17 @@ class ScreenshotTest {
 
     @Test
     fun homeHeartWhiteAccent() {
-        runBlocking { settings.setCounterShape(CounterShape.HEART) }
         val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
         shoot("8_home_heart_white", accent = AccentColor.WHITE) { HomeScreen(PaddingValues(), vm) }
     }
 
     @Test
     fun homeHeartDark() {
-        runBlocking { settings.setCounterShape(CounterShape.HEART) }
         val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
         shoot("5_home_heart_dark", dark = true) { HomeScreen(PaddingValues(), vm) }
     }
 
-    @Test
-    fun homeFlowerWhite() {
-        runBlocking { settings.setCounterShape(CounterShape.FLOWER) }
-        val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
-        shoot("6_home_flower_white", accent = AccentColor.WHITE) { HomeScreen(PaddingValues(), vm) }
-    }
-
-    @Test
+     @Test
     fun notificationStepDark() = shoot("7_onboarding_dark", dark = true) {
         StartDateStep(startDate = null, today = LocalDate.of(2026, 11, 7), onDateSelected = {}, onBack = {}, onContinue = {})
     }

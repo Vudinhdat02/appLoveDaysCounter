@@ -21,16 +21,14 @@
 
 | Bộ đếm | Kỷ niệm | Cài đặt |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/2_home.png" width="240" /> | <img src="docs/screenshots/3_milestones.png" width="240" /> | <img src="docs/screenshots/4_settings.png" width="240" /> |
-| **Trái tim, giao diện tối** | **Bông hoa, màu trắng** | **Thiết lập lần đầu** |
-| <img src="docs/screenshots/5_home_heart_dark.png" width="240" /> | <img src="docs/screenshots/6_home_flower_white.png" width="240" /> | <img src="docs/screenshots/1_welcome.png" width="240" /> |
+| <img src="docs/screenshots/home.jpg" width="250" /> | <img src="docs/screenshots/milestones.jpg" width="250" /> | <img src="docs/screenshots/settings.jpg" width="250" /> |
 
 ## Tính năng
 
 ### Bộ đếm ngày
 - Số ngày yêu nổi bật, kèm dạng **"X năm Y tháng Z ngày"** và ngày bắt đầu.
 - Chạm để đổi đơn vị: **ngày → tuần → tháng → giờ**, số chạy dần khi thay đổi.
-- Chọn hình dạng khung ngay trên màn hình chính: **bo góc, hình tròn, trái tim, bông hoa**.
+- Số ngày hiển thị trong **khung trái tim hồng**, kèm hiệu ứng số chạy.
 - Tuỳ chọn *"Tính ngày bắt đầu là ngày 1"* theo thói quen người Việt.
 - Tự cập nhật khi qua 0h, khi đổi giờ hoặc múi giờ.
 

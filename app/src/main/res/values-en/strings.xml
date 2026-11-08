@@ -172,10 +172,6 @@
     <string name="widget_setup">Open the app to set up ❤</string>
     <string name="widget_small_description">Days in love</string>
     <string name="widget_wide_description">Days in love, your photos and the next anniversary</string>
-    <string name="shape_rounded">Rounded</string>
-    <string name="shape_circle">Circle</string>
-    <string name="shape_heart">Heart</string>
-    <string name="shape_flower">Flower</string>
     <string name="settings_background">Background</string>
     <string name="settings_background_pick">Choose a background from your gallery</string>
     <string name="settings_background_custom">Using your photo</string>

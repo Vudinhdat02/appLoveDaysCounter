@@ -169,10 +169,6 @@
     <string name="widget_setup">Mở app để thiết lập ❤</string>
     <string name="widget_small_description">Số ngày yêu nhau</string>
     <string name="widget_wide_description">Số ngày yêu, ảnh hai bạn và kỷ niệm sắp tới</string>
-    <string name="shape_rounded">Bo góc</string>
-    <string name="shape_circle">Hình tròn</string>
-    <string name="shape_heart">Trái tim</string>
-    <string name="shape_flower">Bông hoa</string>
     <string name="settings_background">Ảnh nền</string>
     <string name="settings_background_pick">Chọn ảnh nền từ thư viện</string>
     <string name="settings_background_custom">Đang dùng ảnh của bạn</string>
