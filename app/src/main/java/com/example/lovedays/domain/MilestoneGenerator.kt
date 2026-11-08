@@ -11,11 +11,13 @@ object MilestoneGenerator {
 
     fun dayKey(days: Int) = "milestone_days_$days"
     fun yearKey(years: Int) = "milestone_year_$years"
+    fun monthKey(months: Int) = "milestone_month_$months"
     fun specialKey(id: Long) = "special_$id"
 
     /**
      * Các giá trị mốc theo ngày không vượt quá [maxDays]:
-     * mỗi 100 ngày tới 1000, sau đó mỗi 500 ngày, và luôn có 365 × n. Sắp xếp tăng dần, không trùng.
+     * mỗi 100 ngày tới 1000, sau đó mỗi 500 ngày. Sắp xếp tăng dần.
+     * (Không sinh 365 × n ngày vì đã có mốc "Kỷ niệm N năm", tránh hai mốc gần trùng nhau.)
      */
     fun dayMilestoneValues(maxDays: Long): List<Int> {
         if (maxDays < 100) return emptyList()
@@ -28,16 +30,15 @@ object MilestoneGenerator {
         while (v <= maxDays) {
             values += v; v += 500
         }
-        v = 365
-        while (v <= maxDays) {
-            values += v; v += 365
-        }
         return values.toList()
     }
 
     /** Ngày rơi vào mốc [days] ngày. Bật "ngày 1" thì ngày bắt đầu là ngày thứ 1. */
     fun dateOfDayMilestone(startDate: LocalDate, days: Int, countStartAsDayOne: Boolean): LocalDate =
         startDate.plusDays(if (countStartAsDayOne) days - 1L else days.toLong())
+
+    /** Tròn [months] tháng. Ngày 31 sẽ thành ngày cuối tháng ở tháng ngắn hơn. */
+    fun dateOfMonthMilestone(startDate: LocalDate, months: Int): LocalDate = startDate.plusMonths(months.toLong())
 
     /** Kỷ niệm tròn [years] năm. 29/02 sẽ thành 28/02 ở năm không nhuận. */
     fun dateOfYearMilestone(startDate: LocalDate, years: Int): LocalDate = startDate.plusYears(years.toLong())
@@ -56,6 +57,16 @@ object MilestoneGenerator {
             val date = dateOfDayMilestone(startDate, days, countStartAsDayOne)
             if (date.isAfter(until)) continue
             result += build(dayKey(days), "", date, MilestoneType.DAYS, today, value = days)
+        }
+        // Mốc theo tháng (bỏ qua bội số của 12 vì đã có mốc năm).
+        var months = 1
+        while (true) {
+            val date = dateOfMonthMilestone(startDate, months)
+            if (date.isAfter(until)) break
+            if (months % 12 != 0) {
+                result += build(monthKey(months), "", date, MilestoneType.MONTHS, today, value = months)
+            }
+            months++
         }
         var years = 1
         while (true) {

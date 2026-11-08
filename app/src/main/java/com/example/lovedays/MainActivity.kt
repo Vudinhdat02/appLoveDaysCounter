@@ -9,7 +9,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import com.example.lovedays.ui.components.LocalBackgroundImage
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
@@ -60,7 +62,9 @@ class MainActivity : AppCompatActivity() {
             val settings by viewModel.settings.collectAsStateWithLifecycle()
             val current = settings ?: return@setContent
             LoveDaysTheme(themeMode = current.themeMode, accentColor = current.accentColor) {
-                AppRoot(onboardingCompleted = current.onboardingCompleted)
+                CompositionLocalProvider(LocalBackgroundImage provides current.backgroundPath) {
+                    AppRoot(onboardingCompleted = current.onboardingCompleted)
+                }
             }
         }
 

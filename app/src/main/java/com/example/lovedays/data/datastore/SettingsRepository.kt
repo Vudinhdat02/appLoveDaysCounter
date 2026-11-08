@@ -38,6 +38,8 @@ class SettingsRepository @Inject constructor(
         val SEVEN_DAYS = booleanPreferencesKey("remind_seven_days_before")
         val THEME = stringPreferencesKey("theme_mode")
         val ACCENT = stringPreferencesKey("accent_color")
+        val COUNTER_SHAPE = stringPreferencesKey("counter_shape")
+        val BACKGROUND = stringPreferencesKey("background_path")
     }
 
     val settings: Flow<CoupleSettings> = dataStore.data
@@ -81,6 +83,9 @@ class SettingsRepository @Inject constructor(
     suspend fun setThemeMode(mode: ThemeMode) = dataStore.edit { it[Keys.THEME] = mode.name }
     suspend fun setAccentColor(color: AccentColor) = dataStore.edit { it[Keys.ACCENT] = color.name }
 
+    suspend fun setCounterShape(shape: CounterShape) = dataStore.edit { it[Keys.COUNTER_SHAPE] = shape.name }
+    suspend fun setBackgroundPath(path: String?) = dataStore.edit { it.setOrRemove(Keys.BACKGROUND, path) }
+
     suspend fun clear() = dataStore.edit { it.clear() }
 
     private fun <T> MutablePreferences.setOrRemove(key: Preferences.Key<T>, value: T?) {
@@ -104,6 +109,8 @@ class SettingsRepository @Inject constructor(
             remindSevenDaysBefore = this[Keys.SEVEN_DAYS] ?: d.remindSevenDaysBefore,
             themeMode = this[Keys.THEME]?.let { v -> ThemeMode.entries.firstOrNull { it.name == v } } ?: d.themeMode,
             accentColor = this[Keys.ACCENT]?.let { v -> AccentColor.entries.firstOrNull { it.name == v } } ?: d.accentColor,
+            counterShape = this[Keys.COUNTER_SHAPE]?.let { v -> CounterShape.entries.firstOrNull { it.name == v } } ?: d.counterShape,
+            backgroundPath = this[Keys.BACKGROUND],
         )
     }
 }

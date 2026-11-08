@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.lovedays.R
+import com.example.lovedays.data.datastore.CounterShape
 import com.example.lovedays.domain.CounterUnit
 import com.example.lovedays.ui.components.Avatar
 import com.example.lovedays.ui.components.BeatingHeart
@@ -72,11 +73,16 @@ import com.example.lovedays.ui.components.MilestoneText
 @Composable
 fun HomeScreen(contentPadding: PaddingValues, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    state?.let { HomeContent(it, contentPadding, onCounterClick = viewModel::cycleUnit) }
+    state?.let { HomeContent(it, contentPadding, onCounterClick = viewModel::cycleUnit, onShapeChange = viewModel::setCounterShape) }
 }
 
 @Composable
-fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClick: () -> Unit) {
+fun HomeContent(
+    state: HomeUiState,
+    contentPadding: PaddingValues,
+    onCounterClick: () -> Unit,
+    onShapeChange: (CounterShape) -> Unit = {},
+) {
     val res = LocalResources.current
     val celebrate = state.nextMilestone?.daysRemaining == 0L
     Box(Modifier.fillMaxSize()) {
@@ -110,68 +116,11 @@ fun HomeContent(state: HomeUiState, contentPadding: PaddingValues, onCounterClic
 
             Spacer(Modifier.height(28.dp))
 
-            val unitLabel = unitLabel(state.unit, state.counterValue)
-            val description = pluralStringResource(
-                R.plurals.a11y_loved_days, state.displayedDays.toInt(), state.displayedDays.toInt(),
-            )
-            val tapHint = stringResource(R.string.home_tap_to_change_unit)
             Entrance(delayMillis = 150, fromOffsetY = 60) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("counter")
-                    .clickable(onClick = onCounterClick)
-                    .clearAndSetSemantics {
-                        contentDescription = if (state.unit == CounterUnit.DAYS) {
-                            description
-                        } else {
-                            "$description. ${state.counterValue} $unitLabel"
-                        }
-                        role = Role.Button
-                        onClick(label = tapHint) { onCounterClick(); true }
-                    },
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                shape = MaterialTheme.shapes.extraLarge,
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(counterBrush())
-                        .padding(vertical = 24.dp, horizontal = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = stringResource(R.string.home_together_for),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White.copy(alpha = 0.9f),
-                    )
-                    val shown = rememberCountUp(state.counterValue)
-                    Text(
-                        text = shown.toString(),
-                        fontSize = 76.sp,
-                        lineHeight = 84.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    )
-                    AnimatedContent(targetState = unitLabel, label = "unit") { label ->
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = Color.White,
-                        )
-                    }
-                    Text(
-                        text = tapHint,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color.White.copy(alpha = 0.75f),
-                        modifier = Modifier.padding(top = 8.dp),
-                    )
-                }
+                CounterCard(state = state, onClick = onCounterClick)
             }
-
-            }
+            Spacer(Modifier.height(12.dp))
+            ShapePicker(selected = state.counterShape, onSelect = onShapeChange)
 
             Spacer(Modifier.height(20.dp))
             Entrance(delayMillis = 350, fromOffsetY = 40) {
@@ -238,34 +187,7 @@ private fun PersonColumn(path: String?, name: String, modifier: Modifier = Modif
     }
 }
 
-/** Số chạy từ giá trị cũ tới giá trị mới (lần đầu chạy từ 0). */
-@Composable
-private fun rememberCountUp(target: Long): Long {
-    val enabled = rememberAnimationsEnabled()
-    val anim = remember { Animatable(if (enabled) 0f else target.toFloat()) }
-    LaunchedEffect(target) {
-        if (enabled) anim.animateTo(target.toFloat(), tween(1400, easing = FastOutSlowInEasing)) else anim.snapTo(target.toFloat())
-    }
-    return anim.value.roundToLong()
-}
 
-@Composable
-private fun counterBrush(): Brush {
-    val scheme = MaterialTheme.colorScheme
-    val enabled = rememberAnimationsEnabled()
-    val shift = if (enabled) {
-        val t = rememberInfiniteTransition(label = "gradient")
-        val v by t.animateFloat(0f, 1f, infiniteRepeatable(tween(6000, easing = LinearEasing), RepeatMode.Reverse), label = "shift")
-        v
-    } else {
-        0f
-    }
-    return Brush.linearGradient(
-        colors = listOf(scheme.primary, scheme.tertiary, scheme.primary.copy(alpha = 0.85f)),
-        start = Offset(0f, 0f),
-        end = Offset(600f + 900f * shift, 900f - 600f * shift),
-    )
-}
 
 /** Hiện dần + trượt vào khi màn hình mở. */
 @Composable
@@ -287,13 +209,3 @@ fun Entrance(
     ) { content() }
 }
 
-@Composable
-private fun unitLabel(unit: CounterUnit, value: Long): String {
-    val q = value.coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
-    return when (unit) {
-        CounterUnit.DAYS -> pluralStringResource(R.plurals.label_days, q)
-        CounterUnit.WEEKS -> pluralStringResource(R.plurals.label_weeks, q)
-        CounterUnit.MONTHS -> pluralStringResource(R.plurals.label_months, q)
-        CounterUnit.HOURS -> pluralStringResource(R.plurals.label_hours, q)
-    }
-}

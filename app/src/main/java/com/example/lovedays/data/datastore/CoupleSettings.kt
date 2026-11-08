@@ -5,7 +5,10 @@ import java.time.LocalDate
 
 enum class ThemeMode { LIGHT, DARK, SYSTEM }
 
-enum class AccentColor { PINK, RED, PURPLE, BLUE, DYNAMIC }
+enum class AccentColor { PINK, RED, PURPLE, BLUE, WHITE, BLACK, DYNAMIC }
+
+/** Hình dạng ô hiển thị số ngày ở màn hình chính. */
+enum class CounterShape { ROUNDED, CIRCLE, HEART, FLOWER }
 
 data class CoupleSettings(
     val onboardingCompleted: Boolean = false,
@@ -22,6 +25,8 @@ data class CoupleSettings(
     val remindSevenDaysBefore: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val accentColor: AccentColor = AccentColor.PINK,
+    val counterShape: CounterShape = CounterShape.ROUNDED,
+    val backgroundPath: String? = null,
 ) {
     val reminderPreferences: ReminderPreferences
         get() = ReminderPreferences(notificationsEnabled, remindOneDayBefore, remindSevenDaysBefore)

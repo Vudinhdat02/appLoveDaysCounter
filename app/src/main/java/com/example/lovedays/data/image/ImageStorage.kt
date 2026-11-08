@@ -25,13 +25,18 @@ class ImageStorage @Inject constructor(
 ) {
     private val dir: File get() = File(context.filesDir, "avatars").apply { mkdirs() }
 
-    suspend fun saveAvatar(uri: Uri, prefix: String): String? = withContext(Dispatchers.IO) {
+    suspend fun saveAvatar(uri: Uri, prefix: String): String? = save(uri, prefix, MAX_SIZE)
+
+    /** Ảnh nền app: giữ độ phân giải cao hơn ảnh đại diện. */
+    suspend fun saveBackground(uri: Uri): String? = save(uri, "background", MAX_BACKGROUND_SIZE)
+
+    private suspend fun save(uri: Uri, prefix: String, maxSize: Int): String? = withContext(Dispatchers.IO) {
         runCatching {
             val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
             if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return@runCatching null
             var sample = 1
-            while (bounds.outWidth / (sample * 2) >= MAX_SIZE && bounds.outHeight / (sample * 2) >= MAX_SIZE) {
+            while (bounds.outWidth / (sample * 2) >= maxSize && bounds.outHeight / (sample * 2) >= maxSize) {
                 sample *= 2
             }
             val opts = BitmapFactory.Options().apply { inSampleSize = sample }
@@ -39,7 +44,7 @@ class ImageStorage @Inject constructor(
                 BitmapFactory.decodeStream(it, null, opts)
             } ?: return@runCatching null
             val rotated = rotateIfNeeded(uri, decoded)
-            val scaled = scaleDown(rotated)
+            val scaled = scaleDown(rotated, maxSize)
             val file = File(dir, "${prefix}_${System.currentTimeMillis()}.jpg")
             FileOutputStream(file).use { scaled.compress(Bitmap.CompressFormat.JPEG, 88, it) }
             file.absolutePath
@@ -72,14 +77,15 @@ class ImageStorage @Inject constructor(
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    private fun scaleDown(bitmap: Bitmap): Bitmap {
+    private fun scaleDown(bitmap: Bitmap, maxSize: Int): Bitmap {
         val maxSide = maxOf(bitmap.width, bitmap.height)
-        if (maxSide <= MAX_SIZE) return bitmap
-        val ratio = MAX_SIZE.toFloat() / maxSide
+        if (maxSide <= maxSize) return bitmap
+        val ratio = maxSize.toFloat() / maxSide
         return bitmap.scale((bitmap.width * ratio).toInt(), (bitmap.height * ratio).toInt())
     }
 
     companion object {
         const val MAX_SIZE = 512
+        const val MAX_BACKGROUND_SIZE = 1600
     }
 }

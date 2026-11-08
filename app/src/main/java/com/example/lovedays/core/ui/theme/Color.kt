@@ -18,6 +18,9 @@ private data class Palette(
     val darkPrimaryContainer: Color,
     val darkOnPrimaryContainer: Color,
     val lightBackground: Color,
+    val tertiary: Color = BrandPink,
+    val darkBackground: Color? = null,
+    val lightOnPrimary: Color = Color.White,
 )
 
 private fun palette(accent: AccentColor) = when (accent) {
@@ -28,6 +31,17 @@ private fun palette(accent: AccentColor) = when (accent) {
     AccentColor.PURPLE -> Palette(
         Color(0xFF7B4BB7), Color(0xFFEEDCFF), Color(0xFF2A0053),
         Color(0xFFD8B9FF), Color(0xFF450D86), Color(0xFF5E3399), Color(0xFFEEDCFF), Color(0xFFFEF7FF),
+    )
+    AccentColor.WHITE -> Palette(
+        Color(0xFF5C5C5C), Color(0xFFF1F1F1), Color(0xFF1C1C1C),
+        Color(0xFFFFFFFF), Color(0xFF1C1C1C), Color(0xFF3C3C3C), Color(0xFFF5F5F5), Color(0xFFFFFFFF),
+        tertiary = Color(0xFF8A8A8A),
+    )
+    AccentColor.BLACK -> Palette(
+        Color(0xFF111111), Color(0xFFE3E3E3), Color(0xFF111111),
+        Color(0xFFE6E6E6), Color(0xFF111111), Color(0xFF2B2B2B), Color(0xFFEDEDED), Color(0xFFF7F7F7),
+        tertiary = Color(0xFF4A4A4A),
+        darkBackground = Color(0xFF000000),
     )
     AccentColor.BLUE -> Palette(
         Color(0xFF2F62C9), Color(0xFFDAE2FF), Color(0xFF001946),
@@ -45,6 +59,8 @@ fun accentPreview(accent: AccentColor): Color = when (accent) {
     AccentColor.RED -> Color(0xFFE53935)
     AccentColor.PURPLE -> Color(0xFF9C6ADE)
     AccentColor.BLUE -> Color(0xFF4A7FE6)
+    AccentColor.WHITE -> Color(0xFFFFFFFF)
+    AccentColor.BLACK -> Color(0xFF111111)
     AccentColor.DYNAMIC -> Color(0xFF7D8F6A)
 }
 
@@ -59,18 +75,18 @@ fun colorSchemeFor(accent: AccentColor, dark: Boolean): ColorScheme {
             secondary = p.darkPrimary,
             secondaryContainer = p.darkPrimaryContainer,
             onSecondaryContainer = p.darkOnPrimaryContainer,
-            tertiary = BrandPink,
-        )
+            tertiary = if (p.tertiary == BrandPink) BrandPink else p.darkPrimaryContainer,
+        ).let { if (p.darkBackground != null) it.copy(background = p.darkBackground, surface = p.darkBackground) else it }
     } else {
         lightColorScheme(
             primary = p.primary,
-            onPrimary = Color.White,
+            onPrimary = p.lightOnPrimary,
             primaryContainer = p.primaryContainer,
             onPrimaryContainer = p.onPrimaryContainer,
             secondary = p.primary,
             secondaryContainer = p.primaryContainer,
             onSecondaryContainer = p.onPrimaryContainer,
-            tertiary = BrandPink,
+            tertiary = p.tertiary,
             background = p.lightBackground,
             surface = p.lightBackground,
         )

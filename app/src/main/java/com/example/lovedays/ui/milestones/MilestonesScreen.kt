@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cake
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Repeat
@@ -185,6 +186,7 @@ fun MilestoneRow(m: Milestone, isNext: Boolean, onClick: (() -> Unit)?, modifier
                 when {
                     m.type == MilestoneType.CUSTOM -> Text(m.emoji ?: "💖", fontSize = 26.sp)
                     m.type == MilestoneType.YEARS -> Icon(Icons.Filled.Cake, null, tint = MaterialTheme.colorScheme.primary)
+                    m.type == MilestoneType.MONTHS -> Icon(Icons.Filled.CalendarMonth, null, tint = MaterialTheme.colorScheme.primary)
                     else -> Icon(Icons.Filled.Favorite, null, tint = MaterialTheme.colorScheme.primary)
                 }
             }

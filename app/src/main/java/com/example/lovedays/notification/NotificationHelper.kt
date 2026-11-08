@@ -90,16 +90,19 @@ class NotificationHelper @Inject constructor(
                 TriggerType.SAME_DAY -> when (m.type) {
                     MilestoneType.DAYS -> ctx.getString(R.string.notif_today_days, m.value)
                     MilestoneType.YEARS -> ctx.getString(R.string.notif_today_years, m.value)
+                    MilestoneType.MONTHS -> ctx.getString(R.string.notif_today_months, m.value)
                     MilestoneType.CUSTOM -> ctx.getString(R.string.notif_today_custom, custom)
                 }
                 TriggerType.ONE_DAY_BEFORE -> when (m.type) {
                     MilestoneType.DAYS -> ctx.getString(R.string.notif_tomorrow_days, m.value)
                     MilestoneType.YEARS -> ctx.getString(R.string.notif_tomorrow_years, m.value)
+                    MilestoneType.MONTHS -> ctx.getString(R.string.notif_tomorrow_months, m.value)
                     MilestoneType.CUSTOM -> ctx.getString(R.string.notif_tomorrow_custom, custom)
                 }
                 TriggerType.SEVEN_DAYS_BEFORE -> when (m.type) {
                     MilestoneType.DAYS -> ctx.getString(R.string.notif_week_days, m.value)
                     MilestoneType.YEARS -> ctx.getString(R.string.notif_week_years, m.value)
+                    MilestoneType.MONTHS -> ctx.getString(R.string.notif_week_months, m.value)
                     MilestoneType.CUSTOM -> ctx.getString(R.string.notif_week_custom, custom)
                 }
             }

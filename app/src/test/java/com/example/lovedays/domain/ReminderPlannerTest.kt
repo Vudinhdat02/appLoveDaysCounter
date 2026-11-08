@@ -10,8 +10,27 @@ class ReminderPlannerTest {
     private val start = LocalDate.of(2025, 1, 1)
     private val allOn = ReminderPreferences(true, remindOneDayBefore = true, remindSevenDaysBefore = true)
 
+    // Bỏ mốc tháng để các test dưới chỉ kiểm tra mốc ngày; mốc tháng có test riêng.
     private fun events(today: LocalDate, special: List<SpecialDay> = emptyList()) =
         MilestoneGenerator.allMilestones(start, special, today, countStartAsDayOne = true)
+            .filter { it.type != MilestoneType.MONTHS }
+
+    @Test
+    fun monthMilestone_sameDayAndOneDayBefore_butNotSevenDays() {
+        val all = { d: LocalDate -> MilestoneGenerator.allMilestones(start, emptyList(), d, true) }
+        val today = LocalDate.of(2025, 3, 1) // tròn 2 tháng
+        assertEquals(
+            listOf("milestone_month_2" to TriggerType.SAME_DAY),
+            ReminderPlanner.plan(all(today), today, allOn, emptySet()).map { it.milestone.key to it.trigger },
+        )
+        val dayBefore = LocalDate.of(2025, 2, 28)
+        assertEquals(
+            listOf("milestone_month_2" to TriggerType.ONE_DAY_BEFORE),
+            ReminderPlanner.plan(all(dayBefore), dayBefore, allOn, emptySet()).map { it.milestone.key to it.trigger },
+        )
+        val weekBefore = LocalDate.of(2025, 2, 22)
+        assertTrue(ReminderPlanner.plan(all(weekBefore), weekBefore, allOn, emptySet()).isEmpty())
+    }
 
     @Test
     fun todayIsMilestone_sendsSameDay() {

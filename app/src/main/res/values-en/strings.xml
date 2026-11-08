@@ -88,6 +88,10 @@
         <item quantity="one">%1$d-year anniversary</item>
         <item quantity="other">%1$d-year anniversary</item>
     </plurals>
+    <plurals name="milestone_months">
+        <item quantity="one">%1$d-month anniversary</item>
+        <item quantity="other">%1$d-month anniversary</item>
+    </plurals>
     <plurals name="countdown_remaining">
         <item quantity="one">%1$d day until %2$s</item>
         <item quantity="other">%1$d days until %2$s</item>
@@ -161,7 +165,21 @@
     <string name="notif_week_years">7 days until your %1$d-year anniversary 💕</string>
     <string name="notif_week_custom">7 days until %1$s 💕</string>
 
+    <string name="notif_today_months">Today is your %1$d-month anniversary 💕</string>
+    <string name="notif_tomorrow_months">Tomorrow is your %1$d-month anniversary 💕</string>
+    <string name="notif_week_months">7 days until your %1$d-month anniversary 💕</string>
+
     <string name="widget_setup">Open the app to set up ❤</string>
     <string name="widget_small_description">Days in love</string>
     <string name="widget_wide_description">Days in love, your photos and the next anniversary</string>
+    <string name="shape_rounded">Rounded</string>
+    <string name="shape_circle">Circle</string>
+    <string name="shape_heart">Heart</string>
+    <string name="shape_flower">Flower</string>
+    <string name="settings_background">Background</string>
+    <string name="settings_background_pick">Choose a background from your gallery</string>
+    <string name="settings_background_custom">Using your photo</string>
+    <string name="settings_background_remove">Remove background</string>
+    <string name="accent_white">White</string>
+    <string name="accent_black">Black</string>
 </resources>

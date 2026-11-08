@@ -83,6 +83,9 @@
     <plurals name="milestone_years">
         <item quantity="other">Kỷ niệm %1$d năm</item>
     </plurals>
+    <plurals name="milestone_months">
+        <item quantity="other">Tròn %1$d tháng</item>
+    </plurals>
     <plurals name="countdown_remaining">
         <item quantity="other">Còn %1$d ngày nữa là %2$s</item>
     </plurals>
@@ -158,8 +161,22 @@
     <string name="notif_week_years">Còn 7 ngày nữa là kỷ niệm %1$d năm yêu nhau 💕</string>
     <string name="notif_week_custom">Còn 7 ngày nữa là %1$s 💕</string>
 
+    <string name="notif_today_months">Hôm nay là tròn %1$d tháng hai bạn yêu nhau 💕</string>
+    <string name="notif_tomorrow_months">Ngày mai là tròn %1$d tháng hai bạn yêu nhau 💕</string>
+    <string name="notif_week_months">Còn 7 ngày nữa là tròn %1$d tháng yêu nhau 💕</string>
+
     <!-- Widget -->
     <string name="widget_setup">Mở app để thiết lập ❤</string>
     <string name="widget_small_description">Số ngày yêu nhau</string>
     <string name="widget_wide_description">Số ngày yêu, ảnh hai bạn và kỷ niệm sắp tới</string>
+    <string name="shape_rounded">Bo góc</string>
+    <string name="shape_circle">Hình tròn</string>
+    <string name="shape_heart">Trái tim</string>
+    <string name="shape_flower">Bông hoa</string>
+    <string name="settings_background">Ảnh nền</string>
+    <string name="settings_background_pick">Chọn ảnh nền từ thư viện</string>
+    <string name="settings_background_custom">Đang dùng ảnh của bạn</string>
+    <string name="settings_background_remove">Xoá ảnh nền</string>
+    <string name="accent_white">Trắng</string>
+    <string name="accent_black">Đen</string>
 </resources>

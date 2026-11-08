@@ -38,6 +38,8 @@ object ReminderPlanner {
             .filter { it.remindEnabled }
             .flatMap { event ->
                 triggers
+                    // Mốc tháng lặp lại mỗi tháng: không nhắc trước 7 ngày để tránh làm phiền.
+                    .filter { !(event.type == MilestoneType.MONTHS && it == TriggerType.SEVEN_DAYS_BEFORE) }
                     .filter { event.date == today.plusDays(it.daysBefore) }
                     .map { PlannedReminder(event, it) }
             }

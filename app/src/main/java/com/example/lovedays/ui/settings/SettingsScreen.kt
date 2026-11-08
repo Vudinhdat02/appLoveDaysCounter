@@ -107,6 +107,9 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
     val pickPartner = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let(viewModel::pickPartnerAvatar)
     }
+    val pickBackground = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        uri?.let(viewModel::pickBackground)
+    }
 
     Scaffold(
         modifier = Modifier.padding(contentPadding),
@@ -231,7 +234,25 @@ fun SettingsScreen(contentPadding: PaddingValues, viewModel: SettingsViewModel =
                         AccentSwatch(accent, selected = s.accentColor == accent) { viewModel.setAccentColor(accent) }
                     }
             }
-            Spacer(Modifier.size(8.dp))
+            ListItem(
+                colors = transparentListItem(),
+                modifier = Modifier.padding(top = 8.dp).clickable { pickBackground.launch(imageRequest) },
+                headlineContent = { Text(stringResource(R.string.settings_background)) },
+                supportingContent = {
+                    Text(
+                        stringResource(
+                            if (s.backgroundPath != null) R.string.settings_background_custom else R.string.settings_background_pick,
+                        ),
+                    )
+                },
+                trailingContent = {
+                    if (s.backgroundPath != null) {
+                        TextButton(onClick = viewModel::removeBackground) {
+                            Text(stringResource(R.string.settings_background_remove))
+                        }
+                    }
+                },
+            )
             HorizontalDivider(Modifier.padding(top = 8.dp))
 
             // --- Ngôn ngữ ---
@@ -385,6 +406,8 @@ private fun AccentSwatch(accent: AccentColor, selected: Boolean, onClick: () -> 
             AccentColor.RED -> R.string.accent_red
             AccentColor.PURPLE -> R.string.accent_purple
             AccentColor.BLUE -> R.string.accent_blue
+            AccentColor.WHITE -> R.string.accent_white
+            AccentColor.BLACK -> R.string.accent_black
             AccentColor.DYNAMIC -> R.string.accent_dynamic
         },
     )
@@ -397,13 +420,17 @@ private fun AccentSwatch(accent: AccentColor, selected: Boolean, onClick: () -> 
                 .size(44.dp)
                 .background(accentPreview(accent), CircleShape)
                 .border(
-                    if (selected) BorderStroke(3.dp, MaterialTheme.colorScheme.onSurface) else BorderStroke(0.dp, Color.Transparent),
+                    when {
+                        selected -> BorderStroke(3.dp, MaterialTheme.colorScheme.onSurface)
+                        accent == AccentColor.WHITE -> BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                        else -> BorderStroke(0.dp, Color.Transparent)
+                    },
                     CircleShape,
                 ),
             contentAlignment = Alignment.Center,
         ) {
             when {
-                selected -> Icon(Icons.Filled.Check, contentDescription = null, tint = Color.White)
+                selected -> Icon(Icons.Filled.Check, contentDescription = null, tint = if (accent == AccentColor.WHITE) Color.Black else Color.White)
                 accent == AccentColor.DYNAMIC -> Icon(Icons.Filled.AutoAwesome, contentDescription = null, tint = Color.White)
             }
         }

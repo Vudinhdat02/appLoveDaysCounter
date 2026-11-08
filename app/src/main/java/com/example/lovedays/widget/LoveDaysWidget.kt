@@ -115,7 +115,7 @@ private fun WidgetContent(settings: CoupleSettings?, specialDays: List<SpecialDa
     Box(
         modifier = (if (small) GlanceModifier.size(side) else GlanceModifier.fillMaxSize())
             .background(ImageProvider(R.drawable.widget_background))
-            .cornerRadius(if (small) side * 0.24f else 24.dp)
+            .cornerRadius(if (small) side * 0.14f else 16.dp)
             .clickable(actionStartActivity<MainActivity>())
             .padding(8.dp),
         contentAlignment = Alignment.Center,

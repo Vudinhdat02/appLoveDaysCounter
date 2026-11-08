@@ -13,7 +13,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.layout.ContentScale
+import coil3.compose.AsyncImage
+import java.io.File
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -122,10 +128,17 @@ fun FloatingHearts(
     }
 }
 
-/** Nền gradient mềm với các trái tim bay nhẹ phía sau nội dung. */
+/** Đường dẫn ảnh nền người dùng chọn (null = nền gradient mặc định). */
+val LocalBackgroundImage = staticCompositionLocalOf<String?> { null }
+
+/**
+ * Nền app: ảnh người dùng chọn (có lớp phủ mờ để chữ dễ đọc) hoặc gradient mềm,
+ * kèm các trái tim bay nhẹ. Màu chữ mặc định theo theme (sáng/tối).
+ */
 @Composable
 fun LoveBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     val scheme = MaterialTheme.colorScheme
+    val imagePath = LocalBackgroundImage.current?.takeIf { File(it).exists() }
     val brush = remember(scheme) {
         Brush.verticalGradient(
             0f to scheme.primaryContainer.copy(alpha = 0.95f),
@@ -134,8 +147,19 @@ fun LoveBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.
         )
     }
     Box(modifier.fillMaxSize().background(brush)) {
+        if (imagePath != null) {
+            AsyncImage(
+                model = File(imagePath),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+            Box(Modifier.fillMaxSize().background(scheme.background.copy(alpha = 0.62f)))
+        }
         FloatingHearts(maxAlpha = 0.22f)
-        content()
+        CompositionLocalProvider(LocalContentColor provides scheme.onBackground) {
+            content()
+        }
     }
 }
 

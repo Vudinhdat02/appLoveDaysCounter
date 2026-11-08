@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lovedays.core.time.TodayProvider
 import com.example.lovedays.data.datastore.CoupleSettings
+import com.example.lovedays.data.datastore.CounterShape
+import kotlinx.coroutines.launch
 import com.example.lovedays.data.datastore.SettingsRepository
 import com.example.lovedays.data.repository.SpecialDayRepository
 import com.example.lovedays.domain.CounterUnit
@@ -32,6 +34,7 @@ data class HomeUiState(
     val unit: CounterUnit,
     val counterValue: Long,
     val nextMilestone: Milestone?,
+    val counterShape: CounterShape = CounterShape.ROUNDED,
 ) {
     companion object {
         fun from(
@@ -54,6 +57,7 @@ data class HomeUiState(
                 unit = unit,
                 counterValue = DayCounter.valueIn(unit, start, today, dayOne),
                 nextMilestone = MilestoneGenerator.nextUpcoming(milestones),
+                counterShape = settings.counterShape,
             )
         }
     }
@@ -61,7 +65,7 @@ data class HomeUiState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
     specialDayRepository: SpecialDayRepository,
     todayProvider: TodayProvider,
     private val savedStateHandle: SavedStateHandle,
@@ -77,6 +81,10 @@ class HomeViewModel @Inject constructor(
     ) { settings, specials, today, unitName ->
         HomeUiState.from(settings, specials, today, CounterUnit.valueOf(unitName))
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    fun setCounterShape(shape: CounterShape) {
+        viewModelScope.launch { settingsRepository.setCounterShape(shape) }
+    }
 
     fun cycleUnit() {
         val current = CounterUnit.valueOf(unit.value)

@@ -1,48 +1,103 @@
-# Đếm Ngày Yêu (Love Days Counter)
+<div align="center">
 
-Ứng dụng Android giúp cặp đôi đếm số ngày yêu nhau, nhắc các ngày kỷ niệm và hiển thị bộ đếm ngay trên màn hình chính bằng widget. Hoạt động hoàn toàn offline, dữ liệu chỉ lưu trên máy.
+# 💕 Đếm Ngày Yêu
 
-| Chào mừng | Bộ đếm | Kỷ niệm | Cài đặt |
-|---|---|---|---|
-| ![](docs/screenshots/1_welcome.png) | ![](docs/screenshots/2_home.png) | ![](docs/screenshots/3_milestones.png) | ![](docs/screenshots/4_settings.png) |
+**Ứng dụng Android đếm ngày yêu nhau, nhắc ngày kỷ niệm và hiển thị bộ đếm ngay trên màn hình chính.**
 
-## Tính năng (MVP)
+![Android](https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
+![Offline](https://img.shields.io/badge/100%25-Offline-FF6F91)
 
-- **F1 Thiết lập lần đầu:** tên hai người (1–30 ký tự), ngày bắt đầu (không chọn được ngày tương lai), ảnh đại diện (tuỳ chọn, Photo Picker, ảnh được copy và nén vào bộ nhớ trong), xin quyền thông báo có giải thích.
-- **F2 Bộ đếm:** số ngày lớn, "X năm Y tháng Z ngày", ngày bắt đầu `dd/MM/yyyy`, kỷ niệm sắp tới. Chạm vào bộ đếm để đổi ngày → tuần → tháng → giờ. Tự cập nhật khi qua 0h, khi đổi giờ/múi giờ và khi quay lại app. Tuỳ chọn "Tính ngày bắt đầu là ngày 1" (mặc định bật).
-- **F3 Mốc tự động:** 100…1000 ngày (mỗi 100), sau đó mỗi 500 ngày, 365 × n ngày, và tròn N năm (29/02 thành 28/02 ở năm không nhuận).
-- **F4 Ngày đặc biệt:** thêm / sửa / xoá (có xác nhận), lặp hằng năm, emoji, bật/tắt nhắc. Bộ lọc Tất cả / Tự động / Của tôi.
-- **F5 Thông báo:** WorkManager chạy 1 lần/ngày vào giờ nhắc (mặc định 8:00), nhắc đúng ngày, trước 1 ngày, trước 7 ngày; bảng `notification_log` chống gửi trùng.
-- **F6 Widget (Glance):** 2x2 (số ngày) và 4x2 (ảnh, tên, mốc sắp tới). Cập nhật ngay khi dữ liệu đổi, sau 0h mỗi ngày, khi đổi giờ/múi giờ/ngôn ngữ.
-- **F7 Cài đặt:** sửa tên, ảnh, ngày bắt đầu; tuỳ chọn ngày 1; thông báo (bật/tắt, giờ, trước 1 ngày, trước 7 ngày); giao diện Sáng/Tối/Hệ thống; màu Hồng/Đỏ/Tím/Xanh/Dynamic Color; ngôn ngữ Tiếng Việt/English (per-app language); xoá toàn bộ dữ liệu (xác nhận 2 bước).
+</div>
+
+---
+
+## Giới thiệu
+
+**Đếm Ngày Yêu** giúp các cặp đôi lưu giữ hành trình bên nhau: bao nhiêu ngày đã yêu, khi nào tới 100 ngày, tròn tháng hay kỷ niệm năm, và không bao giờ quên sinh nhật người ấy. Ứng dụng hoạt động **hoàn toàn offline**, không cần tài khoản, mọi dữ liệu chỉ nằm trên điện thoại của bạn.
+
+## Ảnh màn hình
+
+| Bộ đếm | Kỷ niệm | Cài đặt |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/2_home.png" width="240" /> | <img src="docs/screenshots/3_milestones.png" width="240" /> | <img src="docs/screenshots/4_settings.png" width="240" /> |
+| **Trái tim, giao diện tối** | **Bông hoa, màu đen** | **Thiết lập lần đầu** |
+| <img src="docs/screenshots/5_home_heart_dark.png" width="240" /> | <img src="docs/screenshots/6_home_flower_black.png" width="240" /> | <img src="docs/screenshots/1_welcome.png" width="240" /> |
+
+## Tính năng
+
+### Bộ đếm ngày
+- Số ngày yêu nổi bật, kèm dạng **"X năm Y tháng Z ngày"** và ngày bắt đầu.
+- Chạm để đổi đơn vị: **ngày → tuần → tháng → giờ**, số chạy dần khi thay đổi.
+- Chọn hình dạng khung ngay trên màn hình chính: **bo góc, hình tròn, trái tim, bông hoa**.
+- Tuỳ chọn *"Tính ngày bắt đầu là ngày 1"* theo thói quen người Việt.
+- Tự cập nhật khi qua 0h, khi đổi giờ hoặc múi giờ.
+
+### Ngày kỷ niệm
+- Mốc tự động: **100, 200 … 1000 ngày**, sau đó mỗi 500 ngày; **tròn N tháng**; **kỷ niệm N năm** (29/02 được xử lý đúng ở năm không nhuận).
+- Ngày đặc biệt của riêng bạn: sinh nhật, ngày gặp nhau, ngày cầu hôn… có emoji, lặp hằng năm và bật/tắt nhắc.
+- Bộ lọc *Tất cả / Tự động / Của tôi*, mốc gần nhất được làm nổi bật kèm đếm ngược.
+
+### Thông báo nhắc
+- Nhắc vào giờ bạn chọn (mặc định 8:00): đúng ngày, trước 1 ngày, trước 7 ngày.
+- Không bao giờ gửi trùng một thông báo.
+
+### Widget màn hình chính
+- **2x2**: số ngày yêu trong một ô vuông cân đối.
+- **4x2**: ảnh và tên hai người cùng kỷ niệm sắp tới.
+
+### Cá nhân hoá
+- Ảnh đại diện cho từng người và **ảnh nền app** từ thư viện ảnh.
+- Giao diện **Sáng / Tối / Theo hệ thống**.
+- Màu chủ đạo: **hồng, đỏ, tím, xanh, trắng, đen** hoặc *Dynamic Color* theo hình nền (Android 12+).
+- Hiệu ứng động: trái tim đập, trái tim bay lơ lửng, mưa tim vào ngày kỷ niệm. Tự tắt khi hệ thống bật *Giảm chuyển động*.
+- Ngôn ngữ **Tiếng Việt / English**.
 
 ## Công nghệ
 
-Kotlin 2.4, Jetpack Compose + Material 3, MVVM, Hilt, Navigation Compose (type-safe), Room, DataStore, WorkManager, Glance, Coil 3, `java.time` (core library desugaring). `minSdk 26`, `compileSdk`/`targetSdk 37`, AGP 9.5, Gradle 9.9, Version Catalog (`gradle/libs.versions.toml`).
+| Hạng mục | Thư viện |
+|---|---|
+| Ngôn ngữ | Kotlin 2.4 |
+| Giao diện | Jetpack Compose, Material 3 |
+| Kiến trúc | MVVM, một Activity, Navigation Compose (type-safe) |
+| DI | Hilt |
+| Dữ liệu | Room (ngày đặc biệt, lịch sử thông báo), DataStore (cài đặt) |
+| Nền | WorkManager |
+| Widget | Jetpack Glance |
+| Ảnh | Coil 3, Photo Picker |
+| Kiểm thử | JUnit, Turbine, Robolectric, Compose UI Test |
+
+`minSdk 26` (Android 8.0) · `targetSdk 37` · AGP 9.5 · Gradle 9.9
+
+## Cấu trúc mã nguồn
 
 ```
 app/src/main/java/com/example/lovedays/
-├─ core/        ClockProvider, TodayProvider, theme, ngôn ngữ
-├─ data/        DataStore (SettingsRepository), Room, ImageStorage
-├─ domain/      DayCounter, MilestoneGenerator, ReminderPlanner (hàm thuần)
-├─ notification/ AnniversaryWorker, ReminderScheduler, NotificationHelper
-├─ widget/      LoveDaysWidget (Glance) và receiver
-└─ ui/          onboarding, home, milestones, settings, navigation
+├── core/           Đồng hồ (ClockProvider), theme, ngôn ngữ
+├── data/           DataStore, Room, lưu ảnh
+├── domain/         DayCounter, MilestoneGenerator, ReminderPlanner (hàm thuần, dễ test)
+├── notification/   Worker nhắc kỷ niệm, lên lịch, thông báo
+├── widget/         Widget Glance
+└── ui/             onboarding · home · milestones · settings · components
 ```
 
 ## Build và chạy
 
-Yêu cầu JDK 17+ (Android Studio mới nhất đã có sẵn) và Android SDK Platform 37.
+Yêu cầu: **Android Studio** bản mới (hoặc JDK 17+) và **Android SDK Platform 37**.
 
 ```bash
-./gradlew assembleDebug          # APK debug: app/build/outputs/apk/debug/app-debug.apk
-./gradlew assembleRelease        # APK release đã bật R8/minify
-./gradlew installDebug           # cài lên máy đang cắm USB
+git clone <địa chỉ repo này>
+cd love-days-counter
+
+./gradlew assembleDebug      # app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease    # bản release đã bật R8
+./gradlew installDebug       # cài lên điện thoại đang cắm USB
 ```
 
-Hoặc mở thư mục này bằng Android Studio rồi bấm Run.
+Hoặc mở thư mục bằng Android Studio rồi bấm **Run ▶**.
 
-> Bản release đang được ký bằng debug key để cài thử. Trước khi phát hành lên Google Play, hãy tạo keystore riêng và cấu hình `signingConfigs` trong `app/build.gradle.kts`. Nên đổi `applicationId` (`com.example.lovedays`) thành tên miền của bạn.
+> Bản release hiện ký bằng debug key để cài thử. Trước khi phát hành lên Google Play, hãy tạo keystore riêng, khai báo trong `signingConfigs` và đổi `applicationId`.
 
 ## Kiểm thử
 
@@ -50,8 +105,8 @@ Hoặc mở thư mục này bằng Android Studio rồi bấm Run.
 ./gradlew lint testDebugUnitTest
 ```
 
-Gồm: unit test `DayCounter`, `MilestoneGenerator`, `ReminderPlanner`; Room in-memory (CRUD, chống trùng log); DataStore; `AnniversaryWorker` với `TestListenableWorkerBuilder`; Compose UI test (onboarding khoá nút Tiếp tục, Home hiển thị đúng số ngày với `ClockProvider` giả). Các test Android chạy bằng Robolectric nên không cần máy ảo. `ScreenshotTest` tạo ảnh màn hình vào `app/build/screenshots`.
+Bộ test gồm logic đếm ngày và sinh mốc kỷ niệm (năm nhuận, 29/02, cuối tháng, tuỳ chọn ngày 1), lập lịch nhắc, Room, DataStore, worker thông báo và giao diện Compose. Các test chạy trên JVM bằng Robolectric nên không cần máy ảo.
 
-## Thay đổi schema Room
+## Tác giả
 
-`AppDatabase` đang ở version 1, schema xuất ra `app/schemas`. Khi đổi schema: tăng `version`, viết `Migration` và thêm vào `Room.databaseBuilder(...).addMigrations(...)` trong `di/AppModule.kt`.
+**Vũ Đình Đạt**

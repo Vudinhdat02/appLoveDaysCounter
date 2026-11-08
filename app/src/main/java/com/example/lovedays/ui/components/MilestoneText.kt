@@ -21,6 +21,7 @@ object MilestoneText {
     fun label(res: Resources, m: Milestone): String = when (m.type) {
         MilestoneType.DAYS -> res.getQuantityString(R.plurals.milestone_days, m.value, m.value)
         MilestoneType.YEARS -> res.getQuantityString(R.plurals.milestone_years, m.value, m.value)
+        MilestoneType.MONTHS -> res.getQuantityString(R.plurals.milestone_months, m.value, m.value)
         MilestoneType.CUSTOM -> customTitle(m)
     }
 

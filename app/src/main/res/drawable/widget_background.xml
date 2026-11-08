@@ -2,14 +2,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="24dp" />
+            <corners android:radius="16dp" />
             <gradient android:angle="135" android:startColor="#FFFF9AB3" android:centerColor="#FFFF6F91" android:endColor="#FFD63F6A" />
         </shape>
     </item>
     <!-- Ánh sáng mềm ở góc trên -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="24dp" />
+            <corners android:radius="16dp" />
             <gradient android:type="radial" android:gradientRadius="140dp" android:centerX="0.2" android:centerY="0.1"
                 android:startColor="#55FFFFFF" android:endColor="#00FFFFFF" />
         </shape>

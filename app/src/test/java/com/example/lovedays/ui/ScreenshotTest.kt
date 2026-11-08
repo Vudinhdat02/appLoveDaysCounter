@@ -28,6 +28,10 @@ import com.example.lovedays.ui.home.HomeViewModel
 import com.example.lovedays.ui.milestones.MilestonesScreen
 import com.example.lovedays.ui.milestones.MilestonesViewModel
 import com.example.lovedays.ui.onboarding.WelcomeStep
+import com.example.lovedays.ui.onboarding.StartDateStep
+import com.example.lovedays.data.datastore.AccentColor
+import com.example.lovedays.data.datastore.CounterShape
+import com.example.lovedays.data.datastore.ThemeMode
 import com.example.lovedays.ui.settings.SettingsScreen
 import com.example.lovedays.ui.settings.SettingsViewModel
 import kotlinx.coroutines.runBlocking
@@ -70,8 +74,10 @@ class ScreenshotTest {
     @After
     fun tearDown() = db.close()
 
-    private fun shoot(name: String, content: @Composable () -> Unit) {
-        compose.setContent { LoveDaysTheme { LoveBackground { content() } } }
+    private fun shoot(name: String, dark: Boolean = false, accent: AccentColor = AccentColor.PINK, content: @Composable () -> Unit) {
+        compose.setContent {
+            LoveDaysTheme(themeMode = if (dark) ThemeMode.DARK else ThemeMode.LIGHT, accentColor = accent) { LoveBackground { content() } }
+        }
         compose.mainClock.autoAdvance = false
         compose.mainClock.advanceTimeBy(2_500)
         compose.waitForIdle()
@@ -89,6 +95,25 @@ class ScreenshotTest {
     fun home() {
         val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
         shoot("2_home") { HomeScreen(PaddingValues(), vm) }
+    }
+
+    @Test
+    fun homeHeartDark() {
+        runBlocking { settings.setCounterShape(CounterShape.HEART) }
+        val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
+        shoot("5_home_heart_dark", dark = true) { HomeScreen(PaddingValues(), vm) }
+    }
+
+    @Test
+    fun homeFlowerBlack() {
+        runBlocking { settings.setCounterShape(CounterShape.FLOWER) }
+        val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
+        shoot("6_home_flower_black", accent = AccentColor.BLACK) { HomeScreen(PaddingValues(), vm) }
+    }
+
+    @Test
+    fun notificationStepDark() = shoot("7_onboarding_dark", dark = true) {
+        StartDateStep(startDate = null, today = LocalDate.of(2026, 11, 7), onDateSelected = {}, onBack = {}, onContinue = {})
     }
 
     @Test

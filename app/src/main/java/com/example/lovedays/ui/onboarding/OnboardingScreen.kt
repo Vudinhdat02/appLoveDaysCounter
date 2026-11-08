@@ -181,23 +181,25 @@ private fun StepLayout(
             Spacer(Modifier.height(32.dp))
             content()
         }
-        Row(
+        // Các nút xếp dọc, cùng chiều rộng và chiều cao để cân đối.
+        Column(
             modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            if (onBack != null) {
-                TextButton(onClick = onBack) { Text(stringResource(R.string.action_back)) }
-            }
-            Spacer(Modifier.weight(1f))
-            if (secondaryLabel != null && onSecondary != null) {
-                OutlinedButton(onClick = onSecondary, modifier = Modifier.testTag("secondary")) { Text(secondaryLabel) }
-            }
+            val buttonModifier = Modifier.fillMaxWidth().height(52.dp)
             Button(
                 onClick = onPrimary,
                 enabled = primaryEnabled,
-                modifier = Modifier.testTag("continue"),
-            ) { Text(primaryLabel) }
+                modifier = buttonModifier.testTag("continue"),
+            ) { Text(primaryLabel, maxLines = 1) }
+            if (secondaryLabel != null && onSecondary != null) {
+                OutlinedButton(onClick = onSecondary, modifier = buttonModifier.testTag("secondary")) {
+                    Text(secondaryLabel, maxLines = 1)
+                }
+            }
+            if (onBack != null) {
+                TextButton(onClick = onBack, modifier = buttonModifier) { Text(stringResource(R.string.action_back), maxLines = 1) }
+            }
         }
     }
 }
@@ -225,7 +227,7 @@ fun WelcomeStep(onStart: () -> Unit) {
             modifier = Modifier.padding(top = 12.dp),
         )
         Spacer(Modifier.height(40.dp))
-        Button(onClick = onStart, modifier = Modifier.testTag("continue")) {
+        Button(onClick = onStart, modifier = Modifier.fillMaxWidth().height(52.dp).testTag("continue")) {
             Text(stringResource(R.string.onboarding_start))
         }
     }

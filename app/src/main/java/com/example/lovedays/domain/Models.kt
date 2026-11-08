@@ -2,12 +2,12 @@ package com.example.lovedays.domain
 
 import java.time.LocalDate
 
-enum class MilestoneType { DAYS, YEARS, CUSTOM }
+enum class MilestoneType { DAYS, YEARS, CUSTOM, MONTHS }
 
 /**
  * Một mốc kỷ niệm (tự động hoặc do người dùng tạo). Không lưu xuống DB, luôn được tính ra.
  *
- * @param value số ngày (DAYS) hoặc số năm (YEARS); 0 với CUSTOM.
+ * @param value số ngày (DAYS), số tháng (MONTHS) hoặc số năm (YEARS); 0 với CUSTOM.
  * @param title tiêu đề do người dùng đặt (chỉ dùng với CUSTOM). Mốc tự động được đặt tên ở tầng UI
  *   để hỗ trợ đa ngôn ngữ.
  */

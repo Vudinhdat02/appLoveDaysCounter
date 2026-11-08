@@ -66,6 +66,17 @@ class SettingsViewModel @Inject constructor(
         settingsRepository.setPartnerAvatar(null)
     }
 
+    fun pickBackground(uri: Uri) = viewModelScope.launch {
+        val path = imageStorage.saveBackground(uri) ?: return@launch
+        imageStorage.delete(settings.value?.backgroundPath)
+        settingsRepository.setBackgroundPath(path)
+    }
+
+    fun removeBackground() = viewModelScope.launch {
+        imageStorage.delete(settings.value?.backgroundPath)
+        settingsRepository.setBackgroundPath(null)
+    }
+
     fun setStartDate(date: LocalDate) {
         if (date.isAfter(today)) return
         viewModelScope.launch { settingsRepository.setStartDate(date) }
