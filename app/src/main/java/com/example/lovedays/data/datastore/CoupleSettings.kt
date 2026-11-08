@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 enum class ThemeMode { LIGHT, DARK, SYSTEM }
 
-enum class AccentColor { PINK, RED, PURPLE, BLUE, WHITE, BLACK, DYNAMIC }
+enum class AccentColor { PINK, RED, PURPLE, BLUE, WHITE, DYNAMIC }
 
 /** Hình dạng ô hiển thị số ngày ở màn hình chính. */
 enum class CounterShape { ROUNDED, CIRCLE, HEART, FLOWER }

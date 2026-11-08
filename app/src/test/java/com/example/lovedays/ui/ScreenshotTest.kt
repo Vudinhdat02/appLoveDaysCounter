@@ -98,6 +98,13 @@ class ScreenshotTest {
     }
 
     @Test
+    fun homeHeartWhiteAccent() {
+        runBlocking { settings.setCounterShape(CounterShape.HEART) }
+        val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
+        shoot("8_home_heart_white", accent = AccentColor.WHITE) { HomeScreen(PaddingValues(), vm) }
+    }
+
+    @Test
     fun homeHeartDark() {
         runBlocking { settings.setCounterShape(CounterShape.HEART) }
         val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
@@ -105,10 +112,10 @@ class ScreenshotTest {
     }
 
     @Test
-    fun homeFlowerBlack() {
+    fun homeFlowerWhite() {
         runBlocking { settings.setCounterShape(CounterShape.FLOWER) }
         val vm = HomeViewModel(settings, specials, TodayProvider(clock), SavedStateHandle())
-        shoot("6_home_flower_black", accent = AccentColor.BLACK) { HomeScreen(PaddingValues(), vm) }
+        shoot("6_home_flower_white", accent = AccentColor.WHITE) { HomeScreen(PaddingValues(), vm) }
     }
 
     @Test

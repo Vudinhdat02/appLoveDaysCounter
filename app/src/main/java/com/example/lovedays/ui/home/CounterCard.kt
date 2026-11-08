@@ -40,6 +40,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import com.example.lovedays.core.ui.theme.BrandPink
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.testTag
@@ -107,17 +109,29 @@ fun CounterCard(state: HomeUiState, onClick: () -> Unit, modifier: Modifier = Mo
     val tapHint = stringResource(R.string.home_tap_to_change_unit)
     val onColor = MaterialTheme.colorScheme.onPrimary
     val square = state.counterShape != CounterShape.ROUNDED
-
-    val boxModifier = if (square) {
-        modifier.widthIn(max = 300.dp).fillMaxWidth(0.82f).aspectRatio(1f)
-    } else {
-        modifier.fillMaxWidth()
+    val heart = state.counterShape == CounterShape.HEART
+    // Trái tim luôn màu hồng, chữ trắng, bất kể màu chủ đạo.
+    val textColor = if (heart) Color.White else onColor
+    val boxModifier = when {
+        heart -> modifier.widthIn(max = 320.dp).fillMaxWidth(0.86f).aspectRatio(1.18f)
+        square -> modifier.widthIn(max = 300.dp).fillMaxWidth(0.82f).aspectRatio(1f)
+        else -> modifier.fillMaxWidth()
+    }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    if (heart) {
+        Text(
+            text = stringResource(R.string.home_together_for),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(bottom = 10.dp),
+        )
     }
     Box(
         modifier = boxModifier
             .then(if (state.counterShape == CounterShape.ROUNDED || state.counterShape == CounterShape.CIRCLE) Modifier.shadow(10.dp, shape, clip = false) else Modifier)
             .clip(shape)
-            .background(counterBrush())
+            .background(if (heart) heartBrush() else counterBrush())
             .testTag("counter")
             .clickable(onClick = onClick)
             .clearAndSetSemantics {
@@ -129,38 +143,41 @@ fun CounterCard(state: HomeUiState, onClick: () -> Unit, modifier: Modifier = Mo
     ) {
         val inner = when (state.counterShape) {
             CounterShape.ROUNDED -> Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp)
-            CounterShape.HEART -> Modifier.fillMaxSize().padding(start = 48.dp, end = 48.dp, top = 40.dp, bottom = 80.dp)
+            CounterShape.HEART -> Modifier.fillMaxSize().padding(start = 56.dp, end = 56.dp, top = 44.dp, bottom = 64.dp)
             else -> Modifier.fillMaxSize().padding(40.dp)
         }
         Column(inner, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(
-                text = stringResource(R.string.home_together_for),
-                style = MaterialTheme.typography.titleMedium,
-                color = onColor.copy(alpha = 0.9f),
-                maxLines = 1,
-            )
+            if (!heart) {
+                Text(
+                    text = stringResource(R.string.home_together_for),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = textColor.copy(alpha = 0.9f),
+                    maxLines = 1,
+                )
+            }
             val shown = rememberCountUp(state.counterValue)
             BasicText(
                 text = shown.toString(),
                 maxLines = 1,
                 autoSize = TextAutoSize.StepBased(minFontSize = 28.sp, maxFontSize = if (square) 64.sp else 76.sp),
-                style = TextStyle(color = onColor, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center),
+                style = TextStyle(color = textColor, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center),
                 modifier = Modifier.fillMaxWidth(),
             )
             AnimatedContent(targetState = unitLabel, label = "unit") { label ->
-                Text(text = label, style = MaterialTheme.typography.headlineSmall, color = onColor)
+                Text(text = label, style = MaterialTheme.typography.headlineSmall, color = textColor)
             }
             if (!square || state.counterShape == CounterShape.CIRCLE) {
                 Text(
                     text = tapHint,
                     style = MaterialTheme.typography.labelMedium,
-                    color = onColor.copy(alpha = 0.75f),
+                    color = textColor.copy(alpha = 0.75f),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }
         }
     }
+}
 }
 
 /** Chọn hình dạng ô số ngày ngay trên màn hình chính. */
@@ -230,6 +247,14 @@ private fun counterBrush(): Brush {
         end = Offset(600f + 900f * shift, 900f - 600f * shift),
     )
 }
+
+/** Gradient hồng cố định cho khung trái tim. */
+@Composable
+private fun heartBrush(): Brush = Brush.linearGradient(
+    colors = listOf(Color(0xFFFF8FA8), BrandPink, Color(0xFFE0466E)),
+    start = Offset(0f, 0f),
+    end = Offset(900f, 900f),
+)
 
 @Composable
 private fun unitLabel(unit: CounterUnit, value: Long): String {

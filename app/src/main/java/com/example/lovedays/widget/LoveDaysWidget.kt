@@ -145,7 +145,6 @@ private fun WidgetContent(settings: CoupleSettings?, specialDays: List<SpecialDa
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = GlanceModifier.semantics { contentDescription = description },
                 ) {
-                    Text("❤", style = TextStyle(color = White, fontSize = (side.value * 0.12f).sp))
                     Text(days.toString(), style = TextStyle(color = White, fontSize = numberSize, fontWeight = FontWeight.Bold))
                     Text(daysLabel, style = TextStyle(color = WhiteSoft, fontSize = (side.value * 0.11f).sp))
                 }

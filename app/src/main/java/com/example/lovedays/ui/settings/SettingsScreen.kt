@@ -407,7 +407,6 @@ private fun AccentSwatch(accent: AccentColor, selected: Boolean, onClick: () -> 
             AccentColor.PURPLE -> R.string.accent_purple
             AccentColor.BLUE -> R.string.accent_blue
             AccentColor.WHITE -> R.string.accent_white
-            AccentColor.BLACK -> R.string.accent_black
             AccentColor.DYNAMIC -> R.string.accent_dynamic
         },
     )

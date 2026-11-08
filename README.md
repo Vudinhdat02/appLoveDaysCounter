@@ -22,8 +22,8 @@
 | Bộ đếm | Kỷ niệm | Cài đặt |
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/2_home.png" width="240" /> | <img src="docs/screenshots/3_milestones.png" width="240" /> | <img src="docs/screenshots/4_settings.png" width="240" /> |
-| **Trái tim, giao diện tối** | **Bông hoa, màu đen** | **Thiết lập lần đầu** |
-| <img src="docs/screenshots/5_home_heart_dark.png" width="240" /> | <img src="docs/screenshots/6_home_flower_black.png" width="240" /> | <img src="docs/screenshots/1_welcome.png" width="240" /> |
+| **Trái tim, giao diện tối** | **Bông hoa, màu trắng** | **Thiết lập lần đầu** |
+| <img src="docs/screenshots/5_home_heart_dark.png" width="240" /> | <img src="docs/screenshots/6_home_flower_white.png" width="240" /> | <img src="docs/screenshots/1_welcome.png" width="240" /> |
 
 ## Tính năng
 
@@ -50,7 +50,7 @@
 ### Cá nhân hoá
 - Ảnh đại diện cho từng người và **ảnh nền app** từ thư viện ảnh.
 - Giao diện **Sáng / Tối / Theo hệ thống**.
-- Màu chủ đạo: **hồng, đỏ, tím, xanh, trắng, đen** hoặc *Dynamic Color* theo hình nền (Android 12+).
+- Màu chủ đạo: **hồng, đỏ, tím, xanh, trắng** hoặc *Dynamic Color* theo hình nền (Android 12+).
 - Hiệu ứng động: trái tim đập, trái tim bay lơ lửng, mưa tim vào ngày kỷ niệm. Tự tắt khi hệ thống bật *Giảm chuyển động*.
 - Ngôn ngữ **Tiếng Việt / English**.
 
